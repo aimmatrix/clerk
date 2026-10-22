@@ -1,0 +1,877 @@
+[
+  {
+    "delayMs": 1500,
+    "message": {
+      "externalId": "sim-001",
+      "channelId": "planning",
+      "authorName": "Sam",
+      "authorExternalId": "u-sam",
+      "content": "Right team, Shoreditch Builders meetup is ON for Thu 29 Oct, 6:30-9pm. Venue TBC but we're doing it 🎉",
+      "permalink": "/simulator#msg-sim-001",
+      "sentAt": "2026-10-19T18:02:00+01:00",
+      "source": "simulator"
+    },
+    "cachedItems": [
+      {
+        "type": "event",
+        "title": "Shoreditch Builders meetup",
+        "summary": "Community meetup on Thu 29 Oct, 6:30-9pm. Venue still to be confirmed.",
+        "owner_name": null,
+        "priority": "P1",
+        "due_at": null,
+        "confidence": 0.91,
+        "suggested_reply": null,
+        "event": {
+          "start": "2026-10-29T18:30:00+00:00",
+          "end": "2026-10-29T21:00:00+00:00",
+          "location": null
+        },
+        "reasoning": "Organiser announces date and time; venue unknown."
+      }
+    ]
+  },
+  {
+    "delayMs": 2200,
+    "message": {
+      "externalId": "sim-002",
+      "channelId": "planning",
+      "authorName": "Priya",
+      "authorExternalId": "u-priya",
+      "content": "Expecting about 60 people so we NEED a venue in Shoreditch locked by Fri 23rd or we're stuffed. Anyone got contacts?",
+      "permalink": "/simulator#msg-sim-002",
+      "sentAt": "2026-10-19T18:03:00+01:00",
+      "source": "simulator",
+      "threadId": "thr-venue"
+    },
+    "cachedItems": [
+      {
+        "type": "request",
+        "title": "Secure a Shoreditch venue for 60 people",
+        "summary": "Venue needed for ~60 attendees, confirmed by Fri 23 Oct. Nobody owns it yet.",
+        "owner_name": null,
+        "priority": "P0",
+        "due_at": "2026-10-23T17:00:00+01:00",
+        "confidence": 0.94,
+        "suggested_reply": null,
+        "event": null,
+        "reasoning": "Explicit hard deadline and open call for help; no owner named."
+      }
+    ]
+  },
+  {
+    "delayMs": 1600,
+    "message": {
+      "externalId": "sim-003",
+      "channelId": "random",
+      "authorName": "Dev",
+      "authorExternalId": "u-dev",
+      "content": "[meme: 'this is fine' dog sat in burning room] us trying to find a venue lol 🔥😂",
+      "permalink": "/simulator#msg-sim-003",
+      "sentAt": "2026-10-19T18:04:00+01:00",
+      "source": "simulator"
+    },
+    "cachedItems": [
+      {
+        "type": "noise",
+        "title": "Meme: this is fine",
+        "summary": "Social chatter, no action needed.",
+        "owner_name": null,
+        "priority": "P3",
+        "due_at": null,
+        "confidence": 0.96,
+        "suggested_reply": null,
+        "event": null,
+        "reasoning": "Joke image, no request or commitment."
+      }
+    ]
+  },
+  {
+    "delayMs": 2600,
+    "message": {
+      "externalId": "sim-004",
+      "channelId": "planning",
+      "threadId": "thr-venue",
+      "replyToExternalId": "sim-002",
+      "authorName": "Tom",
+      "authorExternalId": "u-tom",
+      "content": "my mate runs a gallery space in Hoxton, might fit 60. I'll ask him tmrw by 6pm",
+      "permalink": "/simulator#msg-sim-004",
+      "sentAt": "2026-10-19T18:06:00+01:00",
+      "source": "simulator"
+    },
+    "cachedItems": [
+      {
+        "type": "task",
+        "title": "Ask Hoxton gallery about 60-person capacity",
+        "summary": "Tom will check with a friend who runs a Hoxton gallery space.",
+        "owner_name": "Tom",
+        "priority": "P1",
+        "due_at": "2026-10-20T18:00:00+01:00",
+        "confidence": 0.82,
+        "suggested_reply": null,
+        "event": null,
+        "reasoning": "Tom volunteers to follow up tomorrow on a venue lead."
+      }
+    ]
+  },
+  {
+    "delayMs": 2400,
+    "message": {
+      "externalId": "sim-005",
+      "channelId": "planning",
+      "authorName": "Ana",
+      "authorExternalId": "u-ana",
+      "content": "I'll grab the pizza for Thu 29th btw — Ana on food duty 🍕 I'll place the order by 5:30pm that day. 60 ppl so ~20 large?",
+      "permalink": "/simulator#msg-sim-005",
+      "sentAt": "2026-10-19T18:08:00+01:00",
+      "source": "simulator",
+      "threadId": "thr-food"
+    },
+    "cachedItems": [
+      {
+        "type": "task",
+        "title": "Order pizza for the meetup",
+        "summary": "Ana will order about 20 large pizzas for 60 people by Thu 29 Oct, 5:30pm.",
+        "owner_name": "Ana",
+        "priority": "P1",
+        "due_at": "2026-10-29T17:30:00+00:00",
+        "confidence": 0.93,
+        "suggested_reply": null,
+        "event": null,
+        "reasoning": "Clear volunteer, clear item and date."
+      }
+    ]
+  },
+  {
+    "delayMs": 3000,
+    "message": {
+      "externalId": "sim-006",
+      "channelId": "general",
+      "authorName": "Marcus",
+      "authorExternalId": "u-marcus",
+      "content": "hey all, new here 👋 is this where the Shoreditch meetup stuff is happening??",
+      "permalink": "/simulator#msg-sim-006",
+      "sentAt": "2026-10-19T18:10:00+01:00",
+      "source": "simulator"
+    },
+    "cachedItems": [
+      {
+        "type": "question",
+        "title": "Reply to newcomer asking about the meetup",
+        "summary": "New member asking where meetup details live.",
+        "owner_name": null,
+        "priority": "P3",
+        "due_at": null,
+        "confidence": 0.76,
+        "suggested_reply": "Welcome, Marcus! Yes, planning happens in #planning. The next meetup is Thu 29 Oct, 6:30pm, with the venue to be confirmed shortly.",
+        "event": null,
+        "reasoning": "Direct question from a new member, unanswered."
+      }
+    ]
+  },
+  {
+    "delayMs": 1500,
+    "message": {
+      "externalId": "sim-007",
+      "channelId": "random",
+      "authorName": "Jess",
+      "authorExternalId": "u-jess",
+      "content": "anyone watched the arsenal last night 😭 absolutely robbed",
+      "permalink": "/simulator#msg-sim-007",
+      "sentAt": "2026-10-19T18:11:00+01:00",
+      "source": "simulator"
+    },
+    "cachedItems": [
+      {
+        "type": "noise",
+        "title": "Football chat",
+        "summary": "Social chatter, no action needed.",
+        "owner_name": null,
+        "priority": "P3",
+        "due_at": null,
+        "confidence": 0.95,
+        "suggested_reply": null,
+        "event": null,
+        "reasoning": "Off-topic banter."
+      }
+    ]
+  },
+  {
+    "delayMs": 3400,
+    "message": {
+      "externalId": "sim-008",
+      "channelId": "sponsors",
+      "authorName": "Oliver Hart",
+      "authorExternalId": "u-oliverhart",
+      "content": "Hi all, Oliver from Ledgerly here (fintech, Old Street). We'd love to sponsor the next meetup: happy to put in £500 and bring a couple of engineers to talk hiring. Who should I speak to?",
+      "permalink": "/simulator#msg-sim-008",
+      "sentAt": "2026-10-19T18:15:00+01:00",
+      "source": "simulator",
+      "threadId": "thr-sponsor"
+    },
+    "cachedItems": [
+      {
+        "type": "request",
+        "title": "Reply to Ledgerly sponsorship offer (£500)",
+        "summary": "Fintech Ledgerly offers £500 sponsorship plus hiring talk; asks who to speak to.",
+        "owner_name": null,
+        "priority": "P1",
+        "due_at": null,
+        "confidence": 0.9,
+        "suggested_reply": null,
+        "event": null,
+        "reasoning": "Inbound revenue lead awaiting a contact person."
+      }
+    ]
+  },
+  {
+    "delayMs": 2800,
+    "message": {
+      "externalId": "sim-009",
+      "channelId": "sponsors",
+      "threadId": "thr-sponsor",
+      "replyToExternalId": "sim-008",
+      "authorName": "Sam",
+      "authorExternalId": "u-sam",
+      "content": "Thanks Oliver! I'll take this one. Priya can you send me the sponsor deck?",
+      "permalink": "/simulator#msg-sim-009",
+      "sentAt": "2026-10-19T18:16:00+01:00",
+      "source": "simulator"
+    },
+    "cachedItems": [
+      {
+        "type": "task",
+        "title": "Lead the Ledgerly sponsorship conversation",
+        "summary": "Sam takes ownership of the sponsor reply.",
+        "owner_name": "Sam",
+        "priority": "P1",
+        "due_at": null,
+        "confidence": 0.88,
+        "suggested_reply": null,
+        "event": null,
+        "reasoning": "Sam explicitly claims the thread."
+      },
+      {
+        "type": "task",
+        "title": "Send the sponsor deck to Sam",
+        "summary": "Priya asked to share the sponsor deck with Sam.",
+        "owner_name": "Priya",
+        "priority": "P2",
+        "due_at": null,
+        "confidence": 0.85,
+        "suggested_reply": null,
+        "event": null,
+        "reasoning": "Direct request to a named person."
+      }
+    ]
+  },
+  {
+    "delayMs": 2600,
+    "message": {
+      "externalId": "sim-010",
+      "channelId": "planning",
+      "authorName": "Lena",
+      "authorExternalId": "u-lena",
+      "content": "is there step-free access at the venue? asking for a friend who uses a wheelchair",
+      "permalink": "/simulator#msg-sim-010",
+      "sentAt": "2026-10-19T18:20:00+01:00",
+      "source": "simulator"
+    },
+    "cachedItems": [
+      {
+        "type": "question",
+        "title": "Confirm step-free access for the venue",
+        "summary": "Attendee asks about step-free access; venue not yet booked.",
+        "owner_name": null,
+        "priority": "P1",
+        "due_at": null,
+        "confidence": 0.88,
+        "suggested_reply": "Thanks for flagging this, Lena. Step-free access hasn't been confirmed yet. Could an organiser check with the venue and share the access details here?",
+        "event": null,
+        "reasoning": "Accessibility question that needs an answer once the venue is known."
+      }
+    ]
+  },
+  {
+    "delayMs": 2400,
+    "message": {
+      "externalId": "sim-011",
+      "channelId": "planning",
+      "authorName": "Kofi",
+      "authorExternalId": "u-kofi",
+      "content": "can someone bring an HDMI cable + adapter for the projector? need them there Thu 29th by 6pm pls",
+      "permalink": "/simulator#msg-sim-011",
+      "sentAt": "2026-10-19T18:22:00+01:00",
+      "source": "simulator",
+      "threadId": "thr-av"
+    },
+    "cachedItems": [
+      {
+        "type": "task",
+        "title": "Bring an HDMI cable and adapter for the projector",
+        "summary": "Request for someone to bring AV cables on the night.",
+        "owner_name": null,
+        "priority": "P2",
+        "due_at": "2026-10-29T18:00:00+00:00",
+        "confidence": 0.86,
+        "suggested_reply": null,
+        "event": null,
+        "reasoning": "Open ask with no volunteer yet."
+      }
+    ]
+  },
+  {
+    "delayMs": 1500,
+    "message": {
+      "externalId": "sim-012",
+      "channelId": "random",
+      "authorName": "Dev",
+      "authorExternalId": "u-dev",
+      "content": "😂😂😂",
+      "permalink": "/simulator#msg-sim-012",
+      "sentAt": "2026-10-19T18:25:00+01:00",
+      "source": "simulator"
+    },
+    "cachedItems": [
+      {
+        "type": "noise",
+        "title": "Emoji reaction",
+        "summary": "Social chatter, no action needed.",
+        "owner_name": null,
+        "priority": "P3",
+        "due_at": null,
+        "confidence": 0.99,
+        "suggested_reply": null,
+        "event": null,
+        "reasoning": "Emoji only."
+      }
+    ]
+  },
+  {
+    "delayMs": 2000,
+    "message": {
+      "externalId": "sim-013",
+      "channelId": "general",
+      "authorName": "Chloe",
+      "authorExternalId": "u-chloe",
+      "content": "RSVPs are at 38 so far btw",
+      "permalink": "/simulator#msg-sim-013",
+      "sentAt": "2026-10-19T18:27:00+01:00",
+      "source": "simulator"
+    },
+    "cachedItems": [
+      {
+        "type": "noise",
+        "title": "RSVP count update",
+        "summary": "Chloe reports 38 RSVPs so far; no action is requested.",
+        "owner_name": null,
+        "priority": "P3",
+        "due_at": null,
+        "confidence": 0.8,
+        "suggested_reply": null,
+        "event": null,
+        "reasoning": "Informational count without a request or commitment."
+      }
+    ]
+  },
+  {
+    "delayMs": 2800,
+    "message": {
+      "externalId": "sim-014",
+      "channelId": "planning",
+      "authorName": "Priya",
+      "authorExternalId": "u-priya",
+      "content": "Also can someone send the speaker brief to Aisha and Raj by 5pm tomorrow? They keep asking",
+      "permalink": "/simulator#msg-sim-014",
+      "sentAt": "2026-10-19T18:30:00+01:00",
+      "source": "simulator"
+    },
+    "cachedItems": [
+      {
+        "type": "task",
+        "title": "Send speaker brief to Aisha and Raj",
+        "summary": "Speakers are waiting on the brief; needed by Tue 20 Oct.",
+        "owner_name": null,
+        "priority": "P1",
+        "due_at": "2026-10-20T17:00:00+01:00",
+        "confidence": 0.9,
+        "suggested_reply": null,
+        "event": null,
+        "reasoning": "Explicit deadline; no owner named."
+      }
+    ]
+  },
+  {
+    "delayMs": 1500,
+    "message": {
+      "externalId": "sim-015",
+      "channelId": "random",
+      "authorName": "Jess",
+      "authorExternalId": "u-jess",
+      "content": "who else is gonna be hungover at work tomorrow 🙋‍♀️",
+      "permalink": "/simulator#msg-sim-015",
+      "sentAt": "2026-10-19T18:35:00+01:00",
+      "source": "simulator"
+    },
+    "cachedItems": [
+      {
+        "type": "noise",
+        "title": "Banter",
+        "summary": "Social chatter, no action needed.",
+        "owner_name": null,
+        "priority": "P3",
+        "due_at": null,
+        "confidence": 0.93,
+        "suggested_reply": null,
+        "event": null,
+        "reasoning": "Social chatter."
+      }
+    ]
+  },
+  {
+    "delayMs": 2600,
+    "message": {
+      "externalId": "sim-016",
+      "channelId": "planning",
+      "authorName": "Dev",
+      "authorExternalId": "u-dev",
+      "content": "yeah the venue's definitely sorted, I can feel it 🙃",
+      "permalink": "/simulator#msg-sim-016",
+      "sentAt": "2026-10-19T18:40:00+01:00",
+      "source": "simulator"
+    },
+    "cachedItems": [
+      {
+        "type": "noise",
+        "title": "Ignore sarcastic venue banter",
+        "summary": "Dev jokes that the venue is sorted; this is not a booking confirmation.",
+        "owner_name": null,
+        "priority": "P3",
+        "due_at": null,
+        "confidence": 0.94,
+        "suggested_reply": null,
+        "event": null,
+        "reasoning": "Ironic wording and the upside-down smile signal sarcasm, not a commitment."
+      }
+    ]
+  },
+  {
+    "delayMs": 2600,
+    "message": {
+      "externalId": "sim-017",
+      "channelId": "planning",
+      "authorName": "Marcus",
+      "authorExternalId": "u-marcus",
+      "content": "someone should really sort the mic before Thu 29th. dunno if we need to borrow one or fix that crackly setup from last time tbh",
+      "permalink": "/simulator#msg-sim-017",
+      "sentAt": "2026-10-19T18:45:00+01:00",
+      "source": "simulator"
+    },
+    "cachedItems": [
+      {
+        "type": "task",
+        "title": "Clarify what needs doing about the microphone",
+        "summary": "Unclear whether to borrow a microphone or repair the old setup; nobody has volunteered.",
+        "owner_name": null,
+        "priority": "P2",
+        "due_at": null,
+        "confidence": 0.48,
+        "suggested_reply": null,
+        "event": null,
+        "reasoning": "The required action is unclear: borrow or repair; no owner has volunteered."
+      }
+    ]
+  },
+  {
+    "delayMs": 2400,
+    "message": {
+      "externalId": "sim-018",
+      "channelId": "planning",
+      "authorName": "Ana",
+      "authorExternalId": "u-ana",
+      "content": "pizza split will be 8 veggie, 6 vegan, 6 meat. shout if anyone has allergies",
+      "permalink": "/simulator#msg-sim-018",
+      "sentAt": "2026-10-19T18:50:00+01:00",
+      "source": "simulator",
+      "replyToExternalId": "sim-005",
+      "threadId": "thr-food"
+    },
+    "cachedItems": [
+      {
+        "type": "decision",
+        "title": "Plan 20 pizzas: 8 veggie, 6 vegan, 6 meat",
+        "summary": "Ana proposes the pizza split and invites allergy information.",
+        "owner_name": "Ana",
+        "priority": "P2",
+        "due_at": null,
+        "confidence": 0.72,
+        "suggested_reply": null,
+        "event": null,
+        "reasoning": "Ana announces a food choice while inviting allergy information."
+      }
+    ]
+  },
+  {
+    "delayMs": 3000,
+    "message": {
+      "externalId": "sim-019",
+      "channelId": "general",
+      "authorName": "Hannah",
+      "authorExternalId": "u-hannah",
+      "content": "Hi! Love the community. Can our whole team of 4 come along to the meetup or is it limited places?",
+      "permalink": "/simulator#msg-sim-019",
+      "sentAt": "2026-10-19T19:00:00+01:00",
+      "source": "simulator"
+    },
+    "cachedItems": [
+      {
+        "type": "question",
+        "title": "Reply to Hannah about bringing a team of 4",
+        "summary": "Prospective attendee asks whether four people can attend.",
+        "owner_name": null,
+        "priority": "P2",
+        "due_at": null,
+        "confidence": 0.84,
+        "suggested_reply": "Hi Hannah, welcome! Could an organiser confirm whether there are four places available and share the RSVP link?",
+        "event": null,
+        "reasoning": "Direct question about attendance."
+      }
+    ]
+  },
+  {
+    "delayMs": 2600,
+    "message": {
+      "externalId": "sim-020",
+      "channelId": "planning",
+      "threadId": "thr-venue",
+      "replyToExternalId": "sim-002",
+      "authorName": "Tom",
+      "authorExternalId": "u-tom",
+      "content": "Hoxton's a no, gallery's got a wedding on the 29th 😬 back to square one",
+      "permalink": "/simulator#msg-sim-020",
+      "sentAt": "2026-10-20T09:00:00+01:00",
+      "source": "simulator"
+    },
+    "cachedItems": [
+      {
+        "type": "decision",
+        "title": "Rule out the Hoxton gallery as a venue",
+        "summary": "Hoxton gallery is unavailable on the meetup date.",
+        "owner_name": null,
+        "priority": "P2",
+        "due_at": null,
+        "confidence": 0.8,
+        "suggested_reply": null,
+        "event": null,
+        "reasoning": "Outcome of an earlier lead; closes an option."
+      }
+    ]
+  },
+  {
+    "delayMs": 1500,
+    "message": {
+      "externalId": "sim-021",
+      "channelId": "random",
+      "authorName": "Dev",
+      "authorExternalId": "u-dev",
+      "content": "gm gm ☕",
+      "permalink": "/simulator#msg-sim-021",
+      "sentAt": "2026-10-20T09:05:00+01:00",
+      "source": "simulator"
+    },
+    "cachedItems": [
+      {
+        "type": "noise",
+        "title": "Greeting",
+        "summary": "Social chatter, no action needed.",
+        "owner_name": null,
+        "priority": "P3",
+        "due_at": null,
+        "confidence": 0.96,
+        "suggested_reply": null,
+        "event": null,
+        "reasoning": "Casual greeting."
+      }
+    ]
+  },
+  {
+    "delayMs": 3000,
+    "message": {
+      "externalId": "sim-022",
+      "channelId": "planning",
+      "authorName": "Priya",
+      "authorExternalId": "u-priya",
+      "content": "Just got off the phone with Cobalt Rooms: they have Wed 28th free but Thu 29th is private hire. Put a hold on Wed. Sam can u confirm by 5pm today?",
+      "permalink": "/simulator#msg-sim-022",
+      "sentAt": "2026-10-20T10:05:00+01:00",
+      "source": "simulator",
+      "threadId": "thr-date"
+    },
+    "cachedItems": [
+      {
+        "type": "task",
+        "title": "Confirm Cobalt Rooms hold for Wed 28 Oct",
+        "summary": "Priya placed a hold on Wed 28th; Sam needs to confirm.",
+        "owner_name": "Sam",
+        "priority": "P0",
+        "due_at": "2026-10-20T17:00:00+01:00",
+        "confidence": 0.87,
+        "suggested_reply": null,
+        "event": null,
+        "reasoning": "Direct ask to Sam with same-day urgency."
+      }
+    ]
+  },
+  {
+    "delayMs": 3800,
+    "message": {
+      "externalId": "sim-023",
+      "channelId": "planning",
+      "threadId": "thr-date",
+      "replyToExternalId": "sim-022",
+      "authorName": "Sam",
+      "authorExternalId": "u-sam",
+      "content": "confirmed! date change: meetup moves Thu 29 → Wed 28 Oct, same time (6:30-9pm), at The Cobalt Rooms, Shoreditch. step-free access confirmed ✅",
+      "permalink": "/simulator#msg-sim-023",
+      "sentAt": "2026-10-20T10:12:00+01:00",
+      "source": "simulator"
+    },
+    "cachedItems": [
+      {
+        "type": "decision",
+        "title": "Move meetup from Thu 29 to Wed 28 Oct",
+        "summary": "Meetup now Wed 28 Oct, 6:30-9pm at The Cobalt Rooms. Step-free access confirmed.",
+        "owner_name": "Sam",
+        "priority": "P0",
+        "due_at": null,
+        "confidence": 0.96,
+        "suggested_reply": null,
+        "event": null,
+        "reasoning": "Organiser states a final date and venue change."
+      },
+      {
+        "type": "event",
+        "title": "Shoreditch Builders meetup (Wed 28 Oct)",
+        "summary": "Rescheduled meetup at The Cobalt Rooms.",
+        "owner_name": null,
+        "priority": "P0",
+        "due_at": null,
+        "confidence": 0.93,
+        "suggested_reply": null,
+        "event": {
+          "start": "2026-10-28T18:30:00+00:00",
+          "end": "2026-10-28T21:00:00+00:00",
+          "location": "The Cobalt Rooms, Shoreditch"
+        },
+        "reasoning": "New confirmed time and place."
+      }
+    ]
+  },
+  {
+    "delayMs": 2200,
+    "message": {
+      "externalId": "sim-024",
+      "channelId": "planning",
+      "authorName": "Ana",
+      "authorExternalId": "u-ana",
+      "content": "ok pizza moves to Wed 28th then, I'll place the order by 5pm that day — Ana still on food duty 🍕",
+      "permalink": "/simulator#msg-sim-024",
+      "sentAt": "2026-10-20T10:15:00+01:00",
+      "source": "simulator",
+      "threadId": "thr-date",
+      "replyToExternalId": "sim-023"
+    },
+    "cachedItems": [
+      {
+        "type": "task",
+        "title": "Move pizza order deadline to Wed 28 Oct, 5pm",
+        "summary": "Ana will place the pizza order by 5pm on Wed 28 Oct, replacing the Thursday plan.",
+        "owner_name": "Ana",
+        "priority": "P1",
+        "due_at": "2026-10-28T17:00:00+00:00",
+        "confidence": 0.9,
+        "suggested_reply": null,
+        "event": null,
+        "reasoning": "Follow-on from the date change; Ana owns it."
+      }
+    ]
+  },
+  {
+    "delayMs": 1800,
+    "message": {
+      "externalId": "sim-025",
+      "channelId": "planning",
+      "threadId": "thr-date",
+      "replyToExternalId": "sim-023",
+      "authorName": "Lena",
+      "authorExternalId": "u-lena",
+      "content": "amazing, thanks Sam!! see you there",
+      "permalink": "/simulator#msg-sim-025",
+      "sentAt": "2026-10-20T10:20:00+01:00",
+      "source": "simulator"
+    },
+    "cachedItems": [
+      {
+        "type": "noise",
+        "title": "Thanks",
+        "summary": "Social chatter, no action needed.",
+        "owner_name": null,
+        "priority": "P3",
+        "due_at": null,
+        "confidence": 0.88,
+        "suggested_reply": null,
+        "event": null,
+        "reasoning": "Acknowledgement only."
+      }
+    ]
+  },
+  {
+    "delayMs": 2600,
+    "message": {
+      "externalId": "sim-026",
+      "channelId": "general",
+      "authorName": "Chloe",
+      "authorExternalId": "u-chloe",
+      "content": "does anyone know if there's parking near the venue?",
+      "permalink": "/simulator#msg-sim-026",
+      "sentAt": "2026-10-20T11:00:00+01:00",
+      "source": "simulator"
+    },
+    "cachedItems": [
+      {
+        "type": "question",
+        "title": "Answer parking question for the venue",
+        "summary": "Member asks about parking near The Cobalt Rooms.",
+        "owner_name": null,
+        "priority": "P3",
+        "due_at": null,
+        "confidence": 0.8,
+        "suggested_reply": "Parking arrangements haven't been confirmed in this chat. Could an organiser check with The Cobalt Rooms and share the details here?",
+        "event": null,
+        "reasoning": "Direct question, unanswered."
+      }
+    ]
+  },
+  {
+    "delayMs": 1500,
+    "message": {
+      "externalId": "sim-027",
+      "channelId": "random",
+      "authorName": "Jess",
+      "authorExternalId": "u-jess",
+      "content": "[meme: Drake pointing at 'public transport to Shoreditch'] 😭",
+      "permalink": "/simulator#msg-sim-027",
+      "sentAt": "2026-10-20T11:10:00+01:00",
+      "source": "simulator"
+    },
+    "cachedItems": [
+      {
+        "type": "noise",
+        "title": "Meme: Shoreditch transport",
+        "summary": "Social chatter, no action needed.",
+        "owner_name": null,
+        "priority": "P3",
+        "due_at": null,
+        "confidence": 0.95,
+        "suggested_reply": null,
+        "event": null,
+        "reasoning": "Joke image."
+      }
+    ]
+  },
+  {
+    "delayMs": 2800,
+    "message": {
+      "externalId": "sim-028",
+      "channelId": "planning",
+      "threadId": "thr-av",
+      "replyToExternalId": "sim-011",
+      "authorName": "Kofi",
+      "authorExternalId": "u-kofi",
+      "content": "I can bring the HDMI cable + a USB-C adapter for Wed 28th, there by 6pm. someone else needs to sort the clicker tho",
+      "permalink": "/simulator#msg-sim-028",
+      "sentAt": "2026-10-20T11:30:00+01:00",
+      "source": "simulator"
+    },
+    "cachedItems": [
+      {
+        "type": "task",
+        "title": "Bring HDMI cable and USB-C adapter",
+        "summary": "Kofi will bring the projector cables.",
+        "owner_name": "Kofi",
+        "priority": "P2",
+        "due_at": "2026-10-28T18:00:00+00:00",
+        "confidence": 0.88,
+        "suggested_reply": null,
+        "event": null,
+        "reasoning": "Kofi volunteers for the cable ask."
+      },
+      {
+        "type": "task",
+        "title": "Sort a presentation clicker",
+        "summary": "Clicker still unassigned.",
+        "owner_name": null,
+        "priority": "P2",
+        "due_at": null,
+        "confidence": 0.62,
+        "suggested_reply": null,
+        "event": null,
+        "reasoning": "Open need; no owner named."
+      }
+    ]
+  },
+  {
+    "delayMs": 2400,
+    "message": {
+      "externalId": "sim-029",
+      "channelId": "planning",
+      "authorName": "Raj",
+      "authorExternalId": "u-raj",
+      "content": "hey, Aisha and I still haven't had the speaker brief. are we talking 10 or 15 mins each?",
+      "permalink": "/simulator#msg-sim-029",
+      "sentAt": "2026-10-20T11:40:00+01:00",
+      "source": "simulator"
+    },
+    "cachedItems": [
+      {
+        "type": "question",
+        "title": "Answer Raj on talk length and the speaker brief",
+        "summary": "Raj and Aisha are still waiting for the speaker brief and ask whether their slots are 10 or 15 minutes.",
+        "owner_name": null,
+        "priority": "P1",
+        "due_at": null,
+        "confidence": 0.77,
+        "suggested_reply": "Thanks for flagging, Raj. The talk lengths aren't confirmed in this chat yet. Could an organiser confirm whether each slot is 10 or 15 minutes and share the brief?",
+        "event": null,
+        "reasoning": "Speakers ask for missing slot lengths; the brief deadline has not passed."
+      }
+    ]
+  },
+  {
+    "delayMs": 1500,
+    "message": {
+      "externalId": "sim-030",
+      "channelId": "random",
+      "authorName": "Dev",
+      "authorExternalId": "u-dev",
+      "content": "[meme: 'one does not simply' book a venue in Shoreditch] 😂",
+      "permalink": "/simulator#msg-sim-030",
+      "sentAt": "2026-10-20T11:45:00+01:00",
+      "source": "simulator"
+    },
+    "cachedItems": [
+      {
+        "type": "noise",
+        "title": "Meme: venue booking",
+        "summary": "Social chatter, no action needed.",
+        "owner_name": null,
+        "priority": "P3",
+        "due_at": null,
+        "confidence": 0.95,
+        "suggested_reply": null,
+        "event": null,
+        "reasoning": "Joke image."
+      }
+    ]
+  }
+]

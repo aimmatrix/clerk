@@ -5,3 +5,9 @@ dist/
 .env.local
 .DS_Store
 *.log
+
+.pnpm-store/
+supabase/.temp/
+*.tsbuildinfo
+qa-results/
+qa-screenshots/

@@ -1,0 +1,169 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+ * Clerk design tokens (dark-first). Colours are space-separated RGB channels so
+ * Tailwind's `<alpha-value>` modifiers work: rgb(var(--primary) / 0.2).
+ */
+:root {
+  --font-inter: "Inter Variable";
+  --font-space-grotesk: "Space Grotesk Variable";
+  --font-jetbrains-mono: "JetBrains Mono Variable";
+  --bg: 11 13 20; /* #0B0D14 */
+  --surface: 20 24 38; /* #141826 — used at 60% + blur for glass */
+  --surface-solid: 20 24 38;
+  --text: 232 234 242; /* #E8EAF2 */
+  --muted: 138 144 166; /* #8A90A6 */
+
+  --primary: 124 92 255; /* #7C5CFF Clerk violet */
+  --primary-600: 106 74 240; /* AA-contrast fill behind white text */
+  --primary-300: 165 146 255; /* AA-contrast text on dark */
+  --accent: 34 211 238; /* #22D3EE live / realtime */
+
+  --request: 245 158 11; /* #F59E0B */
+  --task: 124 92 255; /* #7C5CFF */
+  --event: 34 211 238; /* #22D3EE */
+  --question: 96 165 250; /* #60A5FA */
+  --decision: 52 211 153; /* #34D399 */
+  --noise: 75 81 99; /* #4B5163 */
+  --urgent: 244 63 94; /* #F43F5E */
+  --success: 52 211 153; /* #34D399 approve glow */
+
+  --radius: 0.875rem;
+  color-scheme: dark;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background font-sans text-base text-foreground antialiased;
+    font-feature-settings: "cv11", "ss01";
+    min-height: 100dvh;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-display tracking-tight;
+  }
+
+  /* Tabular numerals for counters, scores and times */
+  .tabular,
+  [data-tabular] {
+    font-variant-numeric: tabular-nums;
+  }
+
+  ::selection {
+    background: rgb(var(--primary) / 0.4);
+  }
+
+  :focus-visible {
+    @apply outline-none ring-2 ring-primary ring-offset-2 ring-offset-background;
+  }
+
+  /* Slim, dark scrollbars for kanban columns and chat panes */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: rgb(255 255 255 / 0.14) transparent;
+  }
+}
+
+@layer components {
+  /* Glassmorphism: surface @ 60% + 16px blur + 1px edge */
+  .glass {
+    background-color: rgb(var(--surface) / 0.6);
+    -webkit-backdrop-filter: blur(16px);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgb(255 255 255 / 0.08);
+    box-shadow: theme("boxShadow.glass");
+  }
+
+  .glass-strong {
+    background-color: rgb(var(--surface) / 0.85);
+    -webkit-backdrop-filter: blur(24px);
+    backdrop-filter: blur(24px);
+    border: 1px solid rgb(255 255 255 / 0.1);
+    box-shadow: theme("boxShadow.glass");
+  }
+
+  /* Browsers without backdrop-filter get a solid fallback */
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .glass,
+    .glass-strong {
+      background-color: rgb(var(--surface) / 0.95);
+    }
+  }
+
+  .text-gradient {
+    background-image: linear-gradient(
+      100deg,
+      rgb(var(--primary-300)) 0%,
+      rgb(var(--primary)) 45%,
+      rgb(var(--accent)) 100%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .hero-heading {
+    @apply font-display font-semibold;
+    font-size: clamp(2.75rem, 8vw, 4.5rem); /* 44px → 72px */
+    line-height: 1.02;
+    letter-spacing: -0.02em;
+  }
+
+  .section-heading {
+    @apply font-display font-semibold;
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+
+  .eyebrow {
+    @apply font-mono text-xs uppercase tracking-[0.18em] text-muted-foreground;
+  }
+
+  .live-dot {
+    @apply inline-block h-2 w-2 rounded-full bg-accent;
+    animation: live-pulse 1.8s ease-out infinite;
+  }
+}
+
+@layer utilities {
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Reduced motion: no flying, no looping — fades only. Framer components also
+   check useReducedMotion() themselves. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .live-dot {
+    animation: none;
+  }
+}
