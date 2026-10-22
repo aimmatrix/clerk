@@ -9,7 +9,7 @@ import { PriorityBadge } from "@/components/clerk/brand/priority-badge";
 import type { ItemType } from "@/components/clerk/brand/types";
 import { HeroBoard } from "./_components/hero-board";
 
-const GITHUB_URL = process.env.NEXT_PUBLIC_GITHUB_URL ?? "https://github.com/clerk-oss/clerk";
+const GITHUB_URL = process.env.NEXT_PUBLIC_GITHUB_URL ?? "https://github.com/aimmatrix/clerk";
 const DISCORD_INVITE_URL =
   process.env.NEXT_PUBLIC_DISCORD_INVITE_URL ?? `${GITHUB_URL}#quickstart`;
 
