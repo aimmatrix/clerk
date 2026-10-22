@@ -11,10 +11,13 @@ export async function GET(req: Request) {
   if (!isUuid(communityId)) return jsonError('communityId must be a UUID.', 400);
 
   try {
-    if (!(await communityExists(communityId))) {
+    const [exists, { items, failures }] = await Promise.all([
+      communityExists(communityId),
+      loadDigestSource(communityId),
+    ]);
+    if (!exists) {
       return jsonError('That community does not exist.', 404);
     }
-    const { items, failures } = await loadDigestSource(communityId);
     return jsonOk(buildDigest(items, failures));
   } catch (error) {
     return fromStoreError(error);

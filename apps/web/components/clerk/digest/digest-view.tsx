@@ -131,6 +131,11 @@ export function DigestView({ communityId: requestedCommunity }: { communityId?: 
           <p className="mt-3 text-muted-foreground">
             What is open, overdue and unanswered in your community, at a glance.
           </p>
+          {status === 'error' ? (
+            <p role="alert" className="mt-3 text-[13px] text-urgent">
+              Could not load the live digest. Check your connection and press Refresh.
+            </p>
+          ) : null}
           {status === 'sample' ? (
             <p
               role="status"
@@ -170,7 +175,7 @@ export function DigestView({ communityId: requestedCommunity }: { communityId?: 
       </header>
 
       {!digest ? (
-        <Skeleton />
+        status === 'error' ? <EmptyNote>Live community data is unavailable.</EmptyNote> : <Skeleton />
       ) : (
         <div className="space-y-12">
           <StatStrip stats={digest.stats} />

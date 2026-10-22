@@ -1,17 +1,17 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
-import type { Digest } from '@clerk/core';
+import { DEMO_COMMUNITY_ID, type Digest } from '@clerk/core';
 import { fetchDigest } from './api-client';
 import { makeFixtureDigest } from './fixture';
 
-export type DigestStatus = 'loading' | 'ready' | 'sample';
+export type DigestStatus = 'loading' | 'ready' | 'sample' | 'error';
 
 const OFFLINE = process.env.NEXT_PUBLIC_SIMULATOR_OFFLINE === '1';
 
 /**
  * Loads the digest. Falls back to sample data (clearly flagged via
- * `status === 'sample'`) when offline mode is on or the API is unreachable,
+ * `status === 'sample'`) for the demo community when offline or unreachable; real communities never use fixtures,
  * so the page always renders on stage.
  */
 export function useDigest(communityId: string) {
@@ -25,9 +25,10 @@ export function useDigest(communityId: string) {
     const controller = new AbortController();
     abortRef.current = controller;
     setRefreshing(true);
-    const timeout = setTimeout(() => controller.abort(), 2000);
+    const demo = communityId === DEMO_COMMUNITY_ID;
+    const timeout = setTimeout(() => controller.abort(), demo ? 2000 : 10000);
 
-    if (OFFLINE) {
+    if (OFFLINE && demo) {
       clearTimeout(timeout);
       setDigest(makeFixtureDigest());
       setStatus('sample');
@@ -40,8 +41,12 @@ export function useDigest(communityId: string) {
       setStatus('ready');
     } catch {
       if (abortRef.current !== controller) return;
-      setDigest((prev) => prev ?? makeFixtureDigest());
-      setStatus((prev) => (prev === 'ready' ? 'ready' : 'sample'));
+      if (demo) {
+        setDigest((prev) => prev ?? makeFixtureDigest());
+        setStatus((prev) => (prev === 'ready' ? 'ready' : 'sample'));
+      } else {
+        setStatus('error');
+      }
     } finally {
       clearTimeout(timeout);
       if (abortRef.current === controller) setRefreshing(false);
@@ -49,6 +54,8 @@ export function useDigest(communityId: string) {
   }, [communityId]);
 
   useEffect(() => {
+    setDigest(null);
+    setStatus('loading');
     void load();
     return () => abortRef.current?.abort();
   }, [load]);
