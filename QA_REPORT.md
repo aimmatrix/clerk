@@ -116,6 +116,7 @@ Final successful logs: build-final-nav.log, build-final-offline-nav.log, build-l
 
 Errors encountered earlier, with their actual locations rather than invented source lines:
 
+- .github/workflows/ci.yml:20 — Node 20 lacked the native WebSocket required by locked Supabase 2.118.0 (dependency engines: Node >=22). CI/runtime prerequisite aligned to the locally verified Node 22; this supersedes the original build-pack Node 20 prerequisite.
 - apps/web/app/api/_lib/store.ts:15 — GitHub smoke could not resolve the Next-only @/lib/db alias. Fixed with a relative import; pnpm smoke and web typecheck pass. GitHub check history is linked from the public repository Actions page.
 - packages/core/src/index.ts:25 — TS2307 / unresolved ./ranker; affected all three packages. Restored the existing C10 implementation.
 - apps/web/app/layout.ts — build-time Google font requests failed DNS for Inter, Space Grotesk and JetBrains Mono. Replaced remote font loading with bundled fonts; final Geist redesign is bundled too. This was a network build error, not a TypeScript source error with a reported line.
