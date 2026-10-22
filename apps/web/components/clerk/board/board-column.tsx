@@ -19,10 +19,10 @@ export interface BoardColumnProps {
 /** Urgency score at or above which a card is drawn as hot. */
 const HOT_SCORE = 80;
 
-function ReviewLink({ id }: { id: string }) {
+function ReviewLink({ id, communityId }: { id: string; communityId: string }) {
   return (
     <a
-      href={`/review?focus=${encodeURIComponent(id)}`}
+      href={`/review?communityId=${encodeURIComponent(communityId)}&focus=${encodeURIComponent(id)}`}
       className="inline-flex rounded-md px-2 py-1 text-[12px] font-medium text-primary outline-none hover:bg-sunken focus-visible:ring-2 focus-visible:ring-primary"
     >
       Review
@@ -72,7 +72,7 @@ export function BoardColumn({ column, items, layoutIds, now, compact, emptyOverr
                 compact={compact}
                 burstOnApprove={false}
                 className={hot ? '!border-urgent/50' : undefined}
-                actions={item.status === 'pending' ? <ReviewLink id={item.id} /> : undefined}
+                actions={item.status === 'pending' ? <ReviewLink id={item.id} communityId={item.communityId} /> : undefined}
               />
             );
           })}

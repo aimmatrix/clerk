@@ -5,6 +5,7 @@ import "@fontsource-variable/geist-mono";
 import { SiteNav } from "@/components/clerk/brand/site-nav";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import "./globals.css";
+import { getSupabaseService } from "@/lib/supabase-server";
 
 export const metadata: Metadata = {
   title: {
@@ -27,7 +28,25 @@ export const viewport: Viewport = {
   colorScheme: "light",
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const communityId = process.env.COMMUNITY_ID;
+  let liveCommunity: { id: string; name: string; discordUrl?: string } | undefined;
+  if (communityId) {
+    const db = getSupabaseService();
+    const result = db ? await db.from("communities")
+      .select("id, name, discord_guild_id, post_channel_id").eq("id", communityId).maybeSingle() : null;
+    if (result?.data) {
+      const community = result.data;
+      const guild = community.discord_guild_id;
+      const channel = community.post_channel_id;
+      liveCommunity = {
+        id: community.id,
+        name: community.name,
+        discordUrl: /^\d+$/.test(guild ?? "") && /^\d+$/.test(channel ?? "")
+          ? `https://discord.com/channels/${guild}/${channel}` : undefined,
+      };
+    }
+  }
   return (
     <html lang="en-GB">
       <body>
@@ -38,7 +57,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           Skip to content
         </a>
         <TooltipProvider delayDuration={200}>
-          <Suspense fallback={<div className="h-14 border-b border-border bg-surface" />}><SiteNav /></Suspense>
+          <Suspense fallback={<div className="h-14 border-b border-border bg-surface" />}><SiteNav liveCommunity={liveCommunity} /></Suspense>
           <main id="main">{children}</main>
         </TooltipProvider>
       </body>

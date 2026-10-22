@@ -17,7 +17,7 @@ interface BoardPageProps {
 export default function BoardPage({ searchParams }: BoardPageProps) {
   const requested = searchParams.communityId ?? searchParams.community;
   const communityId =
-    requested && UUID.test(requested) ? requested : (process.env.DEMO_COMMUNITY_ID ?? DEMO_COMMUNITY_ID);
+    requested && UUID.test(requested) ? requested : (process.env.COMMUNITY_ID ?? process.env.DEMO_COMMUNITY_ID ?? DEMO_COMMUNITY_ID);
 
   return (
     <main className="mx-auto w-full max-w-[1360px] px-4 py-10 sm:px-8">
