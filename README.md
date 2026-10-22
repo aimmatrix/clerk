@@ -6,14 +6,14 @@ Clerk is an open-source (MIT) Discord bot and web board that turns your communit
 
 > Built for the Grok Bot Community Engineering London Hackathon, Track 5 "Front Desk & Revenue".
 
-<!-- Screenshots: replace the placeholders below once the live build is deployed. -->
+[Watch the simulator recording](docs/img/simulator-demo.gif) · [Live QA report](QA_REPORT.md)
 | Live board | Review queue |
 |---|---|
-| ![Live board — screenshot placeholder](docs/img/board.png) | ![Review queue — screenshot placeholder](docs/img/review.png) |
+| ![Live board](docs/img/board.png) | ![Review queue](docs/img/review.png) |
 
 | Couldn't-handle log | Digest |
 |---|---|
-| ![Couldn't-handle log — screenshot placeholder](docs/img/failures.png) | ![Digest — screenshot placeholder](docs/img/digest.png) |
+| ![Couldn't-handle log](docs/img/failures.png) | ![Digest](docs/img/digest.png) |
 
 ---
 
@@ -63,6 +63,7 @@ pnpm install
 cp .env.example .env.local
 # Offline demo: cached extractions, no LLM key, no network beyond localhost
 echo "NEXT_PUBLIC_SIMULATOR_OFFLINE=1" >> .env.local
+cp .env.local apps/web/.env.local
 pnpm --filter web dev
 ```
 
@@ -111,8 +112,10 @@ cp .env.example .env.local
 
    ```sql
    insert into communities (name, discord_guild_id, post_channel_id)
-   values ('My Community', '<your guild id>', '<your channel id>');
+   values ('My Community', '<your guild id>', '<your channel id>') returning id;
    ```
+
+Save the returned ID as `COMMUNITY_ID` in the root `.env.local`. For the real service, set `NEXT_PUBLIC_SIMULATOR_OFFLINE=0`, then copy the completed file to `apps/web/.env.local`. Open `/board?communityId=<returned-id>` for that community.
 
 Only add the bot to channels you are happy for Clerk to read. See [Privacy](#privacy).
 
@@ -251,15 +254,16 @@ The full walkthrough is in [docs/architecture.md](docs/architecture.md); deploym
 Clerk ships with an evaluation set (60 labelled messages) and a scorer:
 
 ```bash
-pnpm tsx demo/seed/eval/score.ts
+node --env-file=.env.local --import tsx demo/seed/eval/score.ts
 ```
 
 It prints type accuracy, owner F1, priority within-one accuracy and a confusion matrix, and exits non-zero if type accuracy drops below 85%.
 
 | Metric | Target | Latest result |
 |---|---|---|
-| Type accuracy | ≥ 85% | _not yet measured — run the scorer and paste the figure here_ |
-| Owner F1 | ≥ 0.80 | _not yet measured_ |
+| Type accuracy | ≥ 85% | 98.33% (59/60), live gpt-4o-mini run on 22 Oct 2026 |
+| Owner F1 | ≥ 0.80 | 0.9333 |
+| Priority within one level | — | 100% (60/60) |
 
 Owners are only assigned when the person is named in the message or its context; otherwise the owner is left empty and the item is flagged as an ambiguous owner.
 
