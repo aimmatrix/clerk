@@ -151,10 +151,7 @@ export function useSimulator() {
   useEffect(() => {
     if (state.status !== 'playing' || !script) return;
     const step = script[state.cursor];
-    if (!step) {
-      dispatch({ type: 'status', status: 'finished' });
-      return;
-    }
+    if (!step) return;
     const wait = Math.max(0, step.delayMs / speed);
     const timers: ReturnType<typeof setTimeout>[] = [];
     if (wait > TYPING_LEAD_MS * 1.5) {
@@ -168,6 +165,14 @@ export function useSimulator() {
     );
     return () => timers.forEach(clearTimeout);
   }, [state.status, state.cursor, speed, script, deliver]);
+
+  // Playback is complete only after the last extraction (or cache fallback) has landed.
+  useEffect(() => {
+    if (state.status === 'playing' && script && state.cursor >= script.length &&
+        state.messages.every((message) => message.chips !== null)) {
+      dispatch({ type: 'status', status: 'finished' });
+    }
+  }, [state.status, state.cursor, state.messages, script]);
 
   const hardReset = useCallback(() => {
     runRef.current += 1;
