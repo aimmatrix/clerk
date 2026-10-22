@@ -169,7 +169,7 @@ export function FailuresLog({ communityId }: { communityId: string }) {
 
       {/* Table */}
       <div
-        className="panel overflow-x-auto"
+        className="panel relative overflow-x-auto"
         role="region"
         aria-label="Couldn’t-handle log table"
         tabIndex={0}
