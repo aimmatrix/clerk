@@ -73,7 +73,7 @@ Open <http://localhost:3000/simulator> and press **Play**. The simulator is clea
 
 ## Quickstart: run it for your community (~15 minutes)
 
-**Prerequisites:** Node 20, [pnpm](https://pnpm.io/installation), a free [Supabase](https://supabase.com) project, a Discord server where you can add bots, and an API key for any OpenAI-compatible LLM provider.
+**Prerequisites:** Node 22, [pnpm](https://pnpm.io/installation), a free [Supabase](https://supabase.com) project, a Discord server where you can add bots, and an API key for any OpenAI-compatible LLM provider.
 
 ### 1. Clone and install
 

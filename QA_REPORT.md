@@ -165,6 +165,7 @@ The evaluation predates the DST-only normalization fix; category/owner logic was
 | 2e73376 | Keep real digests live even with simulator offline mode; restrict fixtures to demo, show honest errors, parallelize independent DB reads. Live digest curls: 0.13–0.27 s after the fix. |
 | 895d74d | Cache navigation metadata for 60 seconds and bound its wait to 1.5 seconds; fix an observed 4.44-second page stall. Three mobile simulator loads reached Play in 187, 44 and 38 ms. |
 | 56dd3b6 | Fix CI smoke importing the API store outside Next: use the equivalent relative mapper import. Web typecheck and the actual default CI smoke pass. |
+| 33a172a | Align CI and runtime prerequisite to Node 22, required by locked Supabase 2.118.0; local tests already used Node 22. |
 
 Database work applied the existing two migrations and seed to the configured project and repaired their migration-history entries, preserving unrelated pre-existing migrations. No new product feature or unrelated schema was introduced.
 

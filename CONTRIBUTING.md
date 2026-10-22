@@ -4,7 +4,7 @@ Thanks for helping. Clerk is MIT licensed and aims to be runnable by any communi
 
 ## Getting set up
 
-Requirements: Node 20 and pnpm.
+Requirements: Node 22 and pnpm.
 
 ```bash
 git clone https://github.com/<your-org>/clerk.git

@@ -4,7 +4,7 @@ Clerk has three runtime pieces: the web app (and API), the Discord bot, and a Su
 
 ## Web app
 
-Any Node 20 host works. For Vercel:
+Any Node 22 host works. For Vercel:
 
 1. Import the repository and set the root directory to `apps/web` (or use the repo's `vercel.json` if present).
 2. Add the environment variables from `.env.example` in the dashboard. Set `CLERK_API_URL` to the deployed URL.
