@@ -64,7 +64,7 @@ export default function MarketingPage() {
         </p>
         <div className="mt-10 flex flex-wrap items-center gap-3">
           <Button asChild size="lg">
-            <Link href="/simulator">Watch the 60-second demo</Link>
+            <Link href="/simulator">Watch the demo</Link>
           </Button>
           <Button asChild size="lg" variant="secondary">
             <a href={DISCORD_INVITE_URL} target="_blank" rel="noopener noreferrer">
