@@ -12,7 +12,7 @@ import {
   type ReviewAction,
   type ReviewRequest,
 } from '../_mock-core';
-import { itemToRow, rowToFailure, rowToItem, type FailureRow, type ItemRow } from '@/lib/db';
+import { itemToRow, rowToFailure, rowToItem, type FailureRow, type ItemRow } from '../../../lib/db';
 import { StoreError } from './http';
 
 function service(): SupabaseClient {
