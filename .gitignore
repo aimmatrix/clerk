@@ -1,7 +1,37 @@
-node_modules/
-.next/
-dist/
+# Dependencies
+node_modules
+.pnpm-store
+
+# Build
+.next
+dist
+.turbo
+out
+*.tsbuildinfo
+
+# Env / secrets
 .env
 .env.local
-.DS_Store
+.env.*.local
+!.env.example
+
+# Logs & OS
 *.log
+npm-debug.log*
+.DS_Store
+Thumbs.db
+*.command
+
+# Test / coverage
+coverage
+.vitest
+
+# Editors
+.idea
+.vscode/*
+!.vscode/extensions.json
+
+# Deploy
+.vercel
+.railway
+.fly
