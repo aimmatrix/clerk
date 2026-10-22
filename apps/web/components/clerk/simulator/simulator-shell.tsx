@@ -40,6 +40,7 @@ function SimulatorInner() {
       <header className="flex flex-wrap items-center justify-between gap-x-6 gap-y-3">
         <div className="flex flex-wrap items-center gap-x-5 gap-y-3">
           <div>
+            <p className="eyebrow mb-2">Clerk Demo Mode — simulated community chat</p>
             <h1 className="page-heading">Simulator</h1>
             <p className="mt-1 text-sm text-muted-foreground">Watch a busy channel become a ranked queue. No Discord needed.</p>
           </div>
