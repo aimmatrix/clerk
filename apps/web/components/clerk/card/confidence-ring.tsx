@@ -31,7 +31,7 @@ export function ConfidenceRing({ confidence, size = 44, stroke = 3, children, cl
       data-confidence={value.toFixed(2)}
     >
       <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} className="absolute inset-0 -rotate-90" aria-hidden>
-        <circle cx={centre} cy={centre} r={radius} fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth={stroke} />
+        <circle cx={centre} cy={centre} r={radius} fill="none" stroke="#E7E5E1" strokeWidth={stroke} />
         <motion.circle
           cx={centre}
           cy={centre}

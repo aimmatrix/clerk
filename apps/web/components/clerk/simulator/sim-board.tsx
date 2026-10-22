@@ -45,16 +45,16 @@ export function SimBoard({ items, failures, onReview }: SimBoardProps) {
   );
 
   return (
-    <section aria-label="Live board" className="glass flex min-h-0 flex-col overflow-hidden rounded-lg">
-      <header className="flex flex-wrap items-center justify-between gap-2 border-b border-border px-4 py-2.5">
-        <h2 className="font-display text-sm font-semibold">Live board</h2>
+    <section aria-label="Live board" className="panel flex min-h-0 flex-col overflow-hidden">
+      <header className="flex flex-wrap items-center justify-between gap-2 border-b border-border px-5 py-3">
+        <h2 className="text-sm font-semibold">Queue</h2>
         <div role="group" aria-label="Filter by type" className="flex flex-wrap gap-1.5">
           <button
             type="button"
             aria-pressed={filter === null}
             onClick={() => setFilter(null)}
             className={`rounded-full px-2.5 py-1 text-[11px] transition ${
-              filter === null ? 'bg-white/15 text-foreground' : 'text-muted-foreground hover:text-foreground'
+              filter === null ? 'bg-foreground text-background' : 'text-muted-foreground hover:text-foreground'
             }`}
           >
             All {items.filter((i) => i.status !== 'rejected').length}
@@ -66,7 +66,7 @@ export function SimBoard({ items, failures, onReview }: SimBoardProps) {
               aria-pressed={filter === t}
               onClick={() => setFilter(filter === t ? null : t)}
               className={`rounded-full px-2.5 py-1 text-[11px] transition ${
-                filter === t ? TYPE_META[t].chip : 'text-muted-foreground hover:text-foreground'
+                filter === t ? 'bg-foreground text-background' : 'text-muted-foreground hover:text-foreground'
               }`}
             >
               {TYPE_META[t].label} {counts.get(t)}
@@ -84,12 +84,12 @@ export function SimBoard({ items, failures, onReview }: SimBoardProps) {
             return (
               <div key={col.status} className="flex min-h-0 min-w-0 flex-col">
                 <div className="mb-2 flex items-center justify-between px-1">
-                  <h3 className="text-xs font-medium uppercase tracking-wider text-muted-foreground">{col.title}</h3>
-                  <span className="font-mono text-[11px] text-muted-foreground tabular-nums">{cards.length}</span>
+                  <h3 className="text-[13px] font-semibold text-foreground">{col.title}</h3>
+                  <span className="font-mono text-[11px] text-subtle tabular-nums">{cards.length}</span>
                 </div>
                 <div
                   data-sim-column={col.status}
-                  className="flex min-h-40 flex-1 flex-col gap-2 overflow-y-auto rounded-md bg-black/10 p-1.5 xl:min-h-0"
+                  className="flex min-h-40 flex-1 flex-col gap-2 overflow-y-auto xl:min-h-0"
                 >
                   <AnimatePresence initial={false}>
                     {cards.map((item) => (
@@ -97,7 +97,7 @@ export function SimBoard({ items, failures, onReview }: SimBoardProps) {
                     ))}
                   </AnimatePresence>
                   {cards.length === 0 && (
-                    <p className="m-auto px-2 py-6 text-center text-xs text-muted-foreground/70">{col.empty}</p>
+                    <p className="m-auto px-2 py-6 text-center text-xs text-subtle">{col.empty}</p>
                   )}
                 </div>
               </div>
@@ -106,9 +106,9 @@ export function SimBoard({ items, failures, onReview }: SimBoardProps) {
         </div>
       </LayoutGroup>
 
-      <footer className="border-t border-border px-4 py-2.5">
+      <footer className="border-t border-border px-5 py-3">
         <div className="flex items-center justify-between gap-2">
-          <h3 className="text-xs font-medium text-urgent">
+          <h3 className="text-xs font-semibold text-foreground">
             Couldn&apos;t handle <span className="font-mono">({failures.length})</span>
           </h3>
           <Link href="/failures" className="text-xs text-muted-foreground underline-offset-2 hover:text-foreground hover:underline">
@@ -116,26 +116,26 @@ export function SimBoard({ items, failures, onReview }: SimBoardProps) {
           </Link>
         </div>
         {failures.length === 0 ? (
-          <p className="mt-1 text-xs text-muted-foreground/80">
+          <p className="mt-1 text-xs text-subtle">
             Anything Clerk can&apos;t confidently read lands here instead of being guessed at.
           </p>
         ) : (
           <ul className="mt-1.5 space-y-1">
             {failures.slice(-3).map((f) => (
               <li key={f.id} className="flex items-center gap-2 text-xs">
-                <span className="rounded-full bg-urgent/15 px-2 py-0.5 text-[11px] text-urgent">
+                <span className="font-mono text-[11px] text-muted-foreground">
                   {FAILURE_LABEL[f.reason]}
                   {f.confidence !== null && ` · ${Math.round(f.confidence * 100)}%`}
                 </span>
                 <span className="min-w-0 flex-1 truncate text-muted-foreground">
                   {f.authorName}: “{f.messageContent}”
                 </span>
-                <time className="font-mono text-[11px] text-muted-foreground/70">{clock(f.createdAt)}</time>
+                <time className="font-mono text-[11px] text-subtle">{clock(f.createdAt)}</time>
               </li>
             ))}
           </ul>
         )}
-        <p className="mt-2 text-[11px] text-muted-foreground/70">
+        <p className="mt-2 text-[11px] text-subtle">
           Simulated: approving and posting here never sends anything to Discord.
         </p>
       </footer>

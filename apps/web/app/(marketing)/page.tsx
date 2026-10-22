@@ -1,17 +1,45 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Logo } from "@/components/clerk/brand/logo";
-import { ITEM_TYPES, TypeChip } from "@/components/clerk/brand/type-chip";
-import { PriorityBadge } from "@/components/clerk/brand/priority-badge";
-import type { ItemType } from "@/components/clerk/brand/types";
 import { HeroBoard } from "./_components/hero-board";
 
-const GITHUB_URL = process.env.NEXT_PUBLIC_GITHUB_URL ?? "https://github.com/aimmatrix/clerk";
+const GITHUB_URL = process.env.NEXT_PUBLIC_GITHUB_URL ?? "https://github.com/clerk-oss/clerk";
 const DISCORD_INVITE_URL =
   process.env.NEXT_PUBLIC_DISCORD_INVITE_URL ?? `${GITHUB_URL}#quickstart`;
+
+const STEPS = [
+  {
+    n: "01",
+    title: "Listen",
+    body: "Clerk reads only the channels you opt in to, with a few messages of thread context. Banter is counted and ignored.",
+  },
+  {
+    n: "02",
+    title: "Sort",
+    body: "Each actionable message becomes a card with a type, owner, priority, deadline and confidence. Uncertain ones go to a log instead.",
+  },
+  {
+    n: "03",
+    title: "Approve",
+    body: "One key to approve, edit, reassign or reject. Nothing is posted to the community until a person says so.",
+  },
+] as const;
+
+const TYPES = [
+  { name: "Request", does: "Asks of the organisers, captured with who asked.", example: "“we need a venue for 60”" },
+  { name: "Task", does: "Someone commits to doing something. Owner and deadline kept.", example: "“I’ll grab the pizza”" },
+  { name: "Event", does: "Dates, times and places, exportable to a calendar.", example: "“Wed 7pm at Second Home”" },
+  { name: "Question", does: "Unanswered questions, with a drafted reply to approve.", example: "“is it step-free?”" },
+  { name: "Decision", does: "Agreements recorded so they aren’t lost in scroll.", example: "“moving it to Wednesday”" },
+  { name: "Noise", does: "Memes and +1s. Counted, hidden, never nagging you.", example: "“lol”" },
+] as const;
+
+const LOG_ROWS = [
+  { msg: "someone should sort the mic", reason: "No clear owner", confidence: 0.58 },
+  { msg: "can we do the thing from last time?", reason: "Low confidence", confidence: 0.41 },
+  { msg: "ngl the venue situation is cooked", reason: "Low confidence", confidence: 0.52 },
+] as const;
 
 function GithubMark(props: React.SVGAttributes<SVGSVGElement>) {
   return (
@@ -21,110 +49,50 @@ function GithubMark(props: React.SVGAttributes<SVGSVGElement>) {
   );
 }
 
-const STEPS = [
-  {
-    n: "01",
-    title: "Listen",
-    body: "Clerk reads the channels you opt in to, with the last few messages of thread context, and ignores the banter.",
-  },
-  {
-    n: "02",
-    title: "Sort",
-    body: "Each actionable message becomes a card: type, owner, priority, deadline and a confidence score. Anything unsure goes to the log, not the board.",
-  },
-  {
-    n: "03",
-    title: "Approve",
-    body: "One keypress to approve, edit, reassign or reject. Nothing is posted publicly until a human says so.",
-  },
-] as const;
-
-const TYPE_BLURBS: Record<ItemType, string> = {
-  request: "Venue for 60, sponsor offers, asks of the organisers.",
-  task: "“I’ll grab the pizza.” Owner and deadline captured.",
-  event: "Dates, times and places, exportable to your calendar.",
-  question: "Unanswered FAQs, with a drafted reply for you to approve.",
-  decision: "“We’re moving it to Wednesday.” Recorded, not lost.",
-  noise: "Memes and +1s. Counted, hidden, never nagging you.",
-};
-
-const LOG_ROWS = [
-  { msg: "someone should sort the mic", reason: "Ambiguous owner", confidence: 0.58 },
-  { msg: "can we do the thing from last time?", reason: "Low confidence", confidence: 0.41 },
-  { msg: "ngl the venue situation is cooked", reason: "Low confidence", confidence: 0.52 },
-] as const;
+const WRAP = "mx-auto w-full max-w-[1120px] px-4 sm:px-8";
 
 export default function MarketingPage() {
   return (
     <>
       {/* Hero */}
-      <section className="relative overflow-x-clip">
-        <div className="container grid items-center gap-12 pb-20 pt-14 sm:pt-20 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:gap-10 lg:pb-28 lg:pt-24">
-          <div className="animate-fade-up">
-            <Badge variant="live" className="mb-6 gap-2">
-              <span className="live-dot" />
-              Open source · MIT · Built in London
-            </Badge>
-            <h1 className="hero-heading">
-              Every message.
-              <br />
-              <span className="text-gradient">Owned.</span>
-            </h1>
-            <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted-foreground">
-              Clerk turns your community chat into tasks with owners, priorities and deadlines
-              — and tells you what it couldn’t handle.
-            </p>
-            <div className="mt-8 flex flex-wrap items-center gap-3">
-              <Button asChild size="lg">
-                <Link href="/simulator">
-                  Watch demo
-                  <ArrowRight aria-hidden="true" />
-                </Link>
-              </Button>
-              <Button asChild size="lg" variant="secondary">
-                <a href={DISCORD_INVITE_URL} target="_blank" rel="noopener noreferrer">
-                  Add to Discord
-                </a>
-              </Button>
-              <Button asChild size="lg" variant="ghost">
-                <a href={GITHUB_URL} target="_blank" rel="noopener noreferrer">
-                  <GithubMark />
-                  Star on GitHub
-                </a>
-              </Button>
-            </div>
-            <p className="mt-5 text-sm text-muted-foreground">
-              Self-hostable in 15 minutes. Any LLM provider. Nothing posts without your approval.
-            </p>
-          </div>
-
-          <div className="relative animate-fade-up [animation-delay:150ms]">
-            <div
-              aria-hidden="true"
-              className="absolute -inset-6 -z-10 rounded-[2rem] bg-primary/10 blur-3xl"
-            />
-            <HeroBoard />
-          </div>
+      <section className={`${WRAP} pb-16 pt-20 sm:pt-28`}>
+        <p className="eyebrow">Open source · MIT · Discord</p>
+        <h1 className="hero-heading mt-6 max-w-[820px]">Every message in your community, owned.</h1>
+        <p className="mt-7 max-w-[600px] text-lg leading-relaxed text-muted-foreground">
+          Clerk reads your chat and turns requests, tasks and questions into a ranked queue with
+          owners and deadlines. You approve what goes public. It tells you what it couldn’t handle.
+        </p>
+        <div className="mt-10 flex flex-wrap items-center gap-3">
+          <Button asChild size="lg">
+            <Link href="/simulator">Watch the 60-second demo</Link>
+          </Button>
+          <Button asChild size="lg" variant="secondary">
+            <a href={DISCORD_INVITE_URL} target="_blank" rel="noopener noreferrer">
+              Add to Discord
+            </a>
+          </Button>
         </div>
+        <p className="mt-5 text-[13px] text-subtle">
+          Self-host in about 15 minutes. Works with any LLM provider.
+        </p>
+      </section>
+
+      <section aria-label="Product preview" className={`${WRAP} pb-28`}>
+        <HeroBoard />
       </section>
 
       {/* How it works */}
-      <section aria-labelledby="how-heading" className="border-t border-white/[0.06] py-20">
-        <div className="container">
-          <p className="eyebrow">How it works</p>
-          <h2 id="how-heading" className="section-heading mt-3 max-w-2xl">
-            From messy chat to a calm, ranked order.
+      <section aria-labelledby="how-heading" className="border-t border-border">
+        <div className={`${WRAP} py-24`}>
+          <h2 id="how-heading" className="section-heading max-w-[560px]">
+            From a busy channel to a short, ranked list.
           </h2>
-          <ol className="mt-10 grid gap-4 md:grid-cols-3">
+          <ol className="mt-14 grid gap-12 md:grid-cols-3">
             {STEPS.map((step) => (
-              <li key={step.n}>
-                <Card className="h-full">
-                  <CardHeader>
-                    <span className="font-mono text-xs text-primary-300">{step.n}</span>
-                    <CardTitle className="text-xl">{step.title}</CardTitle>
-                    <CardDescription className="leading-relaxed">{step.body}</CardDescription>
-                  </CardHeader>
-                </Card>
+              <li key={step.n} className="border-t border-foreground pt-5">
+                <span className="font-mono text-xs text-subtle">{step.n}</span>
+                <h3 className="mb-2 mt-3 text-lg font-semibold">{step.title}</h3>
+                <p className="leading-relaxed text-muted-foreground">{step.body}</p>
               </li>
             ))}
           </ol>
@@ -132,17 +100,23 @@ export default function MarketingPage() {
       </section>
 
       {/* Types */}
-      <section aria-labelledby="types-heading" className="border-t border-white/[0.06] py-20">
-        <div className="container">
-          <p className="eyebrow">Six kinds of message</p>
-          <h2 id="types-heading" className="section-heading mt-3 max-w-2xl">
-            Clerk knows what each one is for.
+      <section aria-labelledby="types-heading" className="border-t border-border">
+        <div className={`${WRAP} py-24`}>
+          <h2 id="types-heading" className="section-heading">
+            Six kinds of message.
           </h2>
-          <ul className="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {ITEM_TYPES.map((type) => (
-              <li key={type} className="glass flex flex-col items-start gap-3 rounded-lg p-4">
-                <TypeChip type={type} />
-                <p className="text-sm leading-relaxed text-muted-foreground">{TYPE_BLURBS[type]}</p>
+          <p className="mt-3 max-w-[520px] text-muted-foreground">
+            Clerk knows what each one is for, and what to do with it.
+          </p>
+          <ul className="mt-12 border-t border-border">
+            {TYPES.map((t) => (
+              <li
+                key={t.name}
+                className="grid gap-1 border-b border-border py-5 md:grid-cols-[180px_minmax(0,1fr)_minmax(0,1fr)] md:items-baseline md:gap-8"
+              >
+                <span className="text-base font-semibold">{t.name}</span>
+                <span className="text-foreground/80">{t.does}</span>
+                <span className="font-mono text-[13px] text-subtle">{t.example}</span>
               </li>
             ))}
           </ul>
@@ -150,44 +124,36 @@ export default function MarketingPage() {
       </section>
 
       {/* Honesty */}
-      <section aria-labelledby="honest-heading" className="border-t border-white/[0.06] py-20">
-        <div className="container grid items-center gap-10 lg:grid-cols-2">
+      <section aria-labelledby="honest-heading" className="border-t border-border bg-surface">
+        <div className={`${WRAP} grid items-start gap-12 py-24 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16`}>
           <div>
-            <p className="eyebrow">Honest by design</p>
-            <h2 id="honest-heading" className="section-heading mt-3">
-              What Clerk couldn’t handle — shown, not hidden.
+            <h2 id="honest-heading" className="section-heading">
+              When it isn’t sure, it says so.
             </h2>
-            <p className="mt-5 max-w-lg leading-relaxed text-muted-foreground">
-              Low-confidence guesses never reach your board. They land in a plain log with the
-              reason, so you can claim them yourself. A tool you can trust tells you where it
-              stopped.
+            <p className="mt-4 max-w-[440px] leading-relaxed text-muted-foreground">
+              Clerk never guesses an owner or invents a deadline. Anything below its confidence bar
+              is set aside with a plain reason, for someone to claim.
             </p>
-            <Button asChild variant="outline" className="mt-7">
-              <Link href="/failures">
-                See the log
-                <ArrowRight aria-hidden="true" />
-              </Link>
-            </Button>
+            <Link
+              href="/failures"
+              className="mt-6 inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:underline"
+            >
+              See the log
+              <ArrowRight className="h-4 w-4" aria-hidden="true" />
+            </Link>
           </div>
 
-          <div className="glass overflow-hidden rounded-lg">
+          <div className="overflow-hidden rounded-xl border border-border">
             <table className="w-full text-left text-sm">
               <caption className="sr-only">Example of messages Clerk could not handle</caption>
-              <thead className="border-b border-white/[0.08] text-xs uppercase tracking-wider text-muted-foreground">
-                <tr>
-                  <th scope="col" className="px-4 py-3 font-medium">Message</th>
-                  <th scope="col" className="hidden px-4 py-3 font-medium sm:table-cell">Reason</th>
-                  <th scope="col" className="px-4 py-3 text-right font-medium">Confidence</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-white/[0.06]">
+              <tbody className="divide-y divide-border">
                 {LOG_ROWS.map((row) => (
                   <tr key={row.msg}>
-                    <td className="px-4 py-3 text-foreground">“{row.msg}”</td>
-                    <td className="hidden px-4 py-3 sm:table-cell">
-                      <Badge variant="warning">{row.reason}</Badge>
+                    <td className="px-5 py-4">
+                      <div>“{row.msg}”</div>
+                      <div className="mt-0.5 text-[13px] text-subtle">{row.reason}</div>
                     </td>
-                    <td className="px-4 py-3 text-right font-mono tabular text-urgent">
+                    <td className="px-5 py-4 text-right font-mono text-xs tabular text-muted-foreground">
                       {Math.round(row.confidence * 100)}%
                     </td>
                   </tr>
@@ -199,50 +165,34 @@ export default function MarketingPage() {
       </section>
 
       {/* Closing CTA */}
-      <section className="border-t border-white/[0.06] py-24">
-        <div className="container">
-          <div className="glass relative overflow-hidden rounded-2xl px-6 py-14 text-center sm:px-12">
-            <div aria-hidden="true" className="absolute inset-0 -z-10 bg-hero-glow opacity-80" />
-            <div className="mx-auto mb-5 flex items-center justify-center gap-2">
-              <PriorityBadge priority="P0" />
-              <span className="text-sm text-muted-foreground">Venue for 60, due Fri.</span>
-            </div>
-            <h2 className="section-heading mx-auto max-w-2xl">
-              Another community can run Clerk next week.
-            </h2>
-            <p className="mx-auto mt-4 max-w-xl text-muted-foreground">
-              Open source, any LLM provider, your own Supabase. Try the simulator first — no
-              Discord needed.
-            </p>
-            <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-              <Button asChild size="lg">
-                <Link href="/simulator">
-                  Watch demo
-                  <ArrowRight aria-hidden="true" />
-                </Link>
-              </Button>
-              <Button asChild size="lg" variant="secondary">
-                <a href={GITHUB_URL} target="_blank" rel="noopener noreferrer">
-                  <GithubMark />
-                  View on GitHub
-                </a>
-              </Button>
-            </div>
+      <section className="border-t border-border">
+        <div className={`${WRAP} flex flex-wrap items-end justify-between gap-8 py-28`}>
+          <h2 className="max-w-[640px] text-[clamp(1.875rem,4vw,2.75rem)] font-semibold leading-[1.08] tracking-[-0.03em]">
+            Put your community’s to-do list somewhere you can see it.
+          </h2>
+          <div className="flex flex-wrap gap-3">
+            <Button asChild size="lg">
+              <a href={DISCORD_INVITE_URL} target="_blank" rel="noopener noreferrer">
+                Add to Discord
+              </a>
+            </Button>
+            <Button asChild size="lg" variant="secondary">
+              <a href={GITHUB_URL} target="_blank" rel="noopener noreferrer">
+                <GithubMark />
+                View on GitHub
+              </a>
+            </Button>
           </div>
         </div>
       </section>
 
-      <footer className="border-t border-white/[0.06] py-8">
-        <div className="container flex flex-col items-start justify-between gap-4 text-sm text-muted-foreground sm:flex-row sm:items-center">
-          <Logo size={22} />
-          <p>MIT · open source · Built for the Grok Bot Community Engineering London Hackathon</p>
-          <a
-            href={GITHUB_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 rounded-sm transition-colors hover:text-foreground"
-          >
-            <GithubMark className="h-4 w-4" />
+      <footer className="border-t border-border">
+        <div
+          className={`${WRAP} flex flex-col items-start justify-between gap-4 py-7 text-[13px] text-subtle sm:flex-row sm:items-center`}
+        >
+          <Logo />
+          <p>MIT licensed · Built in London</p>
+          <a href={GITHUB_URL} target="_blank" rel="noopener noreferrer" className="hover:text-foreground">
             GitHub
           </a>
         </div>

@@ -100,14 +100,12 @@ function ReviewWorkspaceInner({ communityId, actor = "lead", client: clientProp 
   }, [modalOpen, move, reject, selected]);
 
   return (
-    <div className="mx-auto w-full max-w-6xl px-4 py-8 text-[#E8EAF2] sm:px-6">
+    <div className="mx-auto w-full max-w-[1360px] px-4 py-10 text-foreground sm:px-8">
       <header className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-semibold tracking-tight" style={headingFont}>
-            Review queue
-          </h1>
-          <p className="mt-1 text-sm text-[#8A90A6]">
-            Most urgent first. Nothing is posted until you approve it.
+          <h1 className="page-heading">Review</h1>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Check each card against its source. Nothing is posted until you approve it.
           </p>
         </div>
         <div className="flex items-center gap-4 text-sm">
@@ -118,21 +116,21 @@ function ReviewWorkspaceInner({ communityId, actor = "lead", client: clientProp 
         </div>
       </header>
 
-      <div className="mt-8 grid gap-6 lg:grid-cols-[minmax(0,22rem)_minmax(0,1fr)]">
+      <div className="mt-8 grid gap-6 lg:grid-cols-[minmax(0,26rem)_minmax(0,1fr)] lg:items-start">
         <aside aria-label="Queue">
           {q.phase === "loading" ? (
             <div className="flex flex-col gap-2" aria-label="Loading queue" aria-busy="true">
               {[0, 1, 2, 3].map((n) => (
-                <div key={n} className="h-24 animate-pulse rounded-xl bg-white/5" />
+                <div key={n} className="h-24 animate-pulse rounded-xl bg-sunken" />
               ))}
             </div>
           ) : q.phase === "error" ? (
-            <div className="rounded-xl border border-[#F43F5E]/30 bg-[#F43F5E]/10 p-4 text-sm" role="alert">
+            <div className="rounded-xl border border-urgent/30 bg-surface p-4 text-sm" role="alert">
               <p>Couldn&apos;t load the queue.</p>
               <button
                 type="button"
                 onClick={q.retry}
-                className="mt-3 rounded-lg border border-white/10 px-3 py-1.5 hover:bg-white/5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#7C5CFF]"
+                className="mt-3 rounded-lg border border-border px-3 py-1.5 hover:bg-sunken focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary"
               >
                 Try again
               </button>
@@ -147,14 +145,14 @@ function ReviewWorkspaceInner({ communityId, actor = "lead", client: clientProp 
             <motion.div
               initial={{ opacity: 0, y: reduced ? 0 : 8 }}
               animate={{ opacity: 1, y: 0 }}
-              className="rounded-2xl border border-dashed border-white/10 bg-[#141826]/40 px-6 py-16 text-center"
+              className="rounded-xl border border-dashed border-input px-6 py-16 text-center"
             >
-              <p className="text-2xl font-semibold" style={headingFont}>
+              <p className="text-2xl font-semibold tracking-[-0.015em]" style={headingFont}>
                 Inbox zero. Every message owned.
               </p>
-              <p className="mt-2 text-sm text-[#8A90A6]">
+              <p className="mt-2 text-sm text-muted-foreground">
                 New items appear here the moment Clerk spots them. Anything it couldn&apos;t handle is in{" "}
-                <a href="/failures" className="text-[#A593FF] hover:underline">
+                <a href="/failures" className="text-primary hover:underline">
                   the log
                 </a>
                 .
@@ -176,7 +174,7 @@ function ReviewWorkspaceInner({ communityId, actor = "lead", client: clientProp 
       </div>
 
       <footer
-        className="mt-8 flex flex-wrap items-center gap-x-5 gap-y-2 text-xs text-[#8A90A6]"
+        className="mt-8 flex flex-wrap items-center gap-x-5 gap-y-2 text-xs text-subtle"
         aria-label="Keyboard shortcuts"
       >
         <span>
@@ -230,13 +228,13 @@ function ReviewWorkspaceInner({ communityId, actor = "lead", client: clientProp 
 }
 
 function LiveBadge({ pulse, offline, reduced }: { pulse: number; offline: boolean; reduced: boolean }) {
-  const colour = offline ? "#F59E0B" : "#22D3EE";
+  const colour = offline ? "#B45309" : "#15803D";
   return (
     <span
-      className="inline-flex items-center gap-2 rounded-full border border-white/10 px-2.5 py-1 text-xs text-[#8A90A6]"
+      className="inline-flex items-center gap-2 text-[13px] text-muted-foreground"
       title={offline ? "Can't reach Clerk. Retrying…" : "Checking for new items every few seconds"}
     >
-      <span className="relative flex h-2 w-2">
+      <span className="relative flex h-[7px] w-[7px]">
         {/* re-keyed on every new arrival so the ping replays */}
         {!offline && !reduced ? (
           <span
@@ -246,7 +244,7 @@ function LiveBadge({ pulse, offline, reduced }: { pulse: number; offline: boolea
             style={{ background: colour, animationIterationCount: pulse === 0 ? 1 : 3 }}
           />
         ) : null}
-        <span className="relative inline-flex h-2 w-2 rounded-full" style={{ background: colour }} />
+        <span className="relative inline-flex h-[7px] w-[7px] rounded-full" style={{ background: colour }} />
       </span>
       {offline ? "Offline" : "Live"}
     </span>

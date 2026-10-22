@@ -11,20 +11,14 @@ const COMMUNITY_ID = process.env.DEMO_COMMUNITY_ID ?? '00000000-0000-0000-0000-0
 
 export default function FailuresPage({ searchParams }: { searchParams?: { communityId?: string } }) {
   return (
-    <main className="mx-auto w-full max-w-6xl px-4 py-10 sm:px-6">
+    <div className="mx-auto w-full max-w-[1120px] px-4 py-10 sm:px-8">
       <header className="mb-8 max-w-2xl">
-        <h1
-          className="text-3xl font-semibold tracking-[-0.02em] text-[#E8EAF2] sm:text-4xl"
-          style={{ fontFamily: 'var(--font-space-grotesk), var(--font-heading), system-ui, sans-serif' }}
-        >
-          What Clerk couldn’t handle — honestly.
-        </h1>
-        <p className="mt-3 text-[#8A90A6]">
-          When Clerk isn’t sure, it doesn’t guess. These are the messages it set aside, why, and who has picked each
-          one up.
+        <h1 className="page-heading">Couldn’t handle</h1>
+        <p className="mt-1 text-muted-foreground">
+          Messages Clerk set aside instead of guessing. Claim one to turn it into a card yourself.
         </p>
       </header>
       <FailuresLog communityId={searchParams?.communityId ?? COMMUNITY_ID} />
-    </main>
+    </div>
   );
 }

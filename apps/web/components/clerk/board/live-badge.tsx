@@ -4,17 +4,17 @@ import { motion, useReducedMotion } from 'framer-motion';
 import type { ConnectionStatus } from '@/lib/realtime';
 
 export interface LiveBadgeProps {
-  /** Increment on every insert; each change fires one cyan pulse. */
+  /** Increment on every insert; each change fires one soft pulse. */
   pulseKey: number;
   /** Realtime connection state. Omit for sources without one (demo mode, controlled items). */
   status?: ConnectionStatus;
 }
 
 const STATUS_COPY: Record<ConnectionStatus, { label: string; description: string; colour: string }> = {
-  live: { label: 'Live', description: 'Live: the board updates as messages arrive', colour: '#22D3EE' },
-  connecting: { label: 'Connecting', description: 'Connecting to the live feed', colour: '#8A90A6' },
-  reconnecting: { label: 'Reconnecting', description: 'Live feed lost, reconnecting', colour: '#F59E0B' },
-  offline: { label: 'Offline', description: 'Not connected: the board refreshes by polling', colour: '#8A90A6' },
+  live: { label: 'Live', description: 'Live: the board updates as messages arrive', colour: '#15803D' },
+  connecting: { label: 'Connecting', description: 'Connecting to the live feed', colour: '#71717A' },
+  reconnecting: { label: 'Reconnecting', description: 'Live feed lost, reconnecting', colour: '#B45309' },
+  offline: { label: 'Offline', description: 'Not connected: the board refreshes by polling', colour: '#71717A' },
 };
 
 export function LiveBadge({ pulseKey, status = 'live' }: LiveBadgeProps) {
@@ -26,18 +26,17 @@ export function LiveBadge({ pulseKey, status = 'live' }: LiveBadgeProps) {
     <span
       role="status"
       aria-label={description}
-      className="inline-flex items-center gap-2 rounded-full border px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider"
-      style={{ color: colour, borderColor: `${colour}4D`, background: `${colour}1A` }}
+      className="inline-flex items-center gap-2 text-[13px] text-muted-foreground"
     >
-      <span className="relative flex h-2 w-2" aria-hidden>
+      <span className="relative flex h-[7px] w-[7px]" aria-hidden>
         <span className="absolute inset-0 rounded-full" style={{ background: colour }} />
         {pulses ? (
           <motion.span
             key={pulseKey}
             className="absolute inset-0 rounded-full"
             style={{ background: colour }}
-            initial={{ scale: 1, opacity: 0.8 }}
-            animate={{ scale: 3.2, opacity: 0 }}
+            initial={{ scale: 1, opacity: 0.6 }}
+            animate={{ scale: 2.6, opacity: 0 }}
             transition={{ duration: 0.9, ease: 'easeOut' }}
           />
         ) : null}

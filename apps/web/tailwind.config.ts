@@ -24,9 +24,11 @@ const config: Config = {
         background: token("bg"),
         foreground: token("text"),
         surface: token("surface"),
-        muted: { DEFAULT: token("surface"), foreground: token("muted") },
-        border: "rgb(255 255 255 / 0.08)",
-        input: "rgb(255 255 255 / 0.12)",
+        sunken: token("sunken"),
+        subtle: token("subtle"),
+        muted: { DEFAULT: token("sunken"), foreground: token("muted") },
+        border: token("line"),
+        input: token("line-strong"),
         ring: token("primary"),
         // Brand
         primary: {
@@ -36,8 +38,8 @@ const config: Config = {
           600: token("primary-600"),
           foreground: "rgb(255 255 255)",
         },
-        accent: { DEFAULT: token("accent"), foreground: token("bg") },
-        // Item types
+        accent: { DEFAULT: token("accent"), foreground: "rgb(255 255 255)" },
+        // Item types (deliberately neutral: types are told apart by label)
         request: token("request"),
         task: token("task"),
         event: token("event"),
@@ -46,43 +48,31 @@ const config: Config = {
         noise: token("noise"),
         // Status
         urgent: token("urgent"),
+        warning: token("warning"),
         success: token("success"),
         destructive: { DEFAULT: token("urgent"), foreground: "rgb(255 255 255)" },
         popover: { DEFAULT: token("surface-solid"), foreground: token("text") },
         card: { DEFAULT: token("surface"), foreground: token("text") },
       },
       borderRadius: {
-        lg: "0.875rem",
-        md: "0.625rem",
+        xl: "0.75rem",
+        lg: "0.625rem",
+        md: "0.5rem",
         sm: "0.375rem",
       },
       fontFamily: {
-        sans: ["var(--font-inter)", "ui-sans-serif", "system-ui", "sans-serif"],
-        display: [
-          "var(--font-space-grotesk)",
-          "var(--font-inter)",
-          "ui-sans-serif",
-          "system-ui",
-          "sans-serif",
-        ],
-        mono: [
-          "var(--font-jetbrains-mono)",
-          "ui-monospace",
-          "SFMono-Regular",
-          "monospace",
-        ],
+        sans: ["var(--font-sans)", "ui-sans-serif", "system-ui", "sans-serif"],
+        display: ["var(--font-sans)", "ui-sans-serif", "system-ui", "sans-serif"],
+        mono: ["var(--font-mono)", "ui-monospace", "SFMono-Regular", "monospace"],
       },
       fontSize: {
-        base: ["0.875rem", { lineHeight: "1.25rem" }], // 14/20 UI base
+        base: ["0.875rem", { lineHeight: "1.4rem" }], // 14 UI base
       },
       boxShadow: {
-        glass: "0 8px 32px -8px rgb(0 0 0 / 0.5), inset 0 1px 0 0 rgb(255 255 255 / 0.06)",
-        glow: "0 0 0 1px rgb(var(--success) / 0.5), 0 0 32px -4px rgb(var(--success) / 0.45)",
-        "glow-primary": "0 0 40px -8px rgb(var(--primary) / 0.6)",
-      },
-      backgroundImage: {
-        "hero-glow":
-          "radial-gradient(at 20% 10%, #7C5CFF33, transparent 50%), radial-gradient(at 80% 0%, #22D3EE22, transparent 40%)",
+        glass: "none",
+        glow: "0 0 0 1px rgb(var(--success) / 0.4)",
+        "glow-primary": "none",
+        pop: "0 8px 24px -8px rgb(24 24 27 / 0.12), 0 1px 2px rgb(24 24 27 / 0.06)",
       },
       keyframes: {
         "live-pulse": {

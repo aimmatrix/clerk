@@ -70,7 +70,7 @@ export function Modal({ open, onClose, labelledBy, placement = "center", childre
 
   return createPortal(
     <div
-      className={`fixed inset-0 z-50 flex bg-black/60 backdrop-blur-sm ${
+      className={`fixed inset-0 z-50 flex bg-black/30 ${
         isDrawer ? "items-stretch justify-end" : "items-center justify-center p-4"
       }`}
       onMouseDown={(e) => {
@@ -83,7 +83,7 @@ export function Modal({ open, onClose, labelledBy, placement = "center", childre
         aria-modal="true"
         aria-labelledby={labelledBy}
         tabIndex={-1}
-        className={`border border-white/10 bg-[#141826]/95 text-[#E8EAF2] shadow-2xl backdrop-blur-xl outline-none ${
+        className={`border border-border bg-surface text-foreground shadow-pop outline-none ${
           isDrawer ? "h-full w-full max-w-md overflow-y-auto border-y-0 border-r-0" : "w-full max-w-md rounded-2xl"
         }`}
       >

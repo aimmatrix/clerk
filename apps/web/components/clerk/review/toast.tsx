@@ -21,9 +21,9 @@ interface ToastApi {
 const ToastContext = createContext<ToastApi | null>(null);
 
 const TONE_COLOUR: Record<ToastInput["tone"], string> = {
-  success: "#34D399",
-  error: "#F43F5E",
-  info: "#22D3EE",
+  success: "#15803D",
+  error: "#C2410C",
+  info: "#71717A",
 };
 
 export function useToast(): ToastApi {
@@ -67,9 +67,8 @@ export function ToastProvider({ children }: { children: ReactNode }) {
               exit={{ opacity: 0, y: reduced ? 0 : 8 }}
               transition={{ duration: 0.2 }}
               role={t.tone === "error" ? "alert" : "status"}
-              className="pointer-events-auto flex max-w-md items-start gap-3 rounded-xl border border-white/10 bg-[#141826]/90 px-4 py-3 text-sm text-[#E8EAF2] shadow-xl backdrop-blur-xl"
-              style={{ boxShadow: `0 0 0 1px ${TONE_COLOUR[t.tone]}33, 0 12px 32px #00000066` }}
-            >
+              className="pointer-events-auto flex max-w-md items-start gap-3 rounded-xl border border-border bg-surface px-4 py-3 text-sm text-foreground shadow-pop"
+                          >
               <span
                 aria-hidden
                 className="mt-1.5 h-2 w-2 shrink-0 rounded-full"
@@ -83,7 +82,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
                     t.action?.run();
                     dismiss(t.id);
                   }}
-                  className="shrink-0 rounded-md px-2 py-0.5 text-xs font-medium text-[#A593FF] hover:bg-white/5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#7C5CFF]"
+                  className="shrink-0 rounded-md px-2 py-0.5 text-xs font-medium text-primary hover:bg-sunken focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary"
                 >
                   {t.action.label}
                 </button>
@@ -92,7 +91,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
                 type="button"
                 aria-label="Dismiss"
                 onClick={() => dismiss(t.id)}
-                className="shrink-0 rounded-md px-1 text-[#8A90A6] hover:text-[#E8EAF2] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#7C5CFF]"
+                className="shrink-0 rounded-md px-1 text-muted-foreground hover:text-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary"
               >
                 ×
               </button>

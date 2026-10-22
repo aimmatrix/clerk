@@ -5,19 +5,19 @@ export const TYPE_META: Record<
   ItemType,
   { label: string; text: string; chip: string; border: string; rgb: string }
 > = {
-  request: { label: 'Request', text: 'text-request', chip: 'bg-request/15 text-request', border: 'border-request/40', rgb: 'var(--request)' },
-  task: { label: 'Task', text: 'text-task', chip: 'bg-task/15 text-primary-300', border: 'border-task/40', rgb: 'var(--task)' },
-  event: { label: 'Event', text: 'text-event', chip: 'bg-event/15 text-event', border: 'border-event/40', rgb: 'var(--event)' },
-  question: { label: 'Question', text: 'text-question', chip: 'bg-question/15 text-question', border: 'border-question/40', rgb: 'var(--question)' },
-  decision: { label: 'Decision', text: 'text-decision', chip: 'bg-decision/15 text-decision', border: 'border-decision/40', rgb: 'var(--decision)' },
-  noise: { label: 'Noise', text: 'text-muted-foreground', chip: 'bg-white/5 text-muted-foreground', border: 'border-white/10', rgb: 'var(--noise)' },
+  request: { label: 'Request', text: 'text-muted-foreground', chip: 'text-muted-foreground', border: 'border-border', rgb: 'var(--request)' },
+  task: { label: 'Task', text: 'text-muted-foreground', chip: 'text-muted-foreground', border: 'border-border', rgb: 'var(--task)' },
+  event: { label: 'Event', text: 'text-muted-foreground', chip: 'text-muted-foreground', border: 'border-border', rgb: 'var(--event)' },
+  question: { label: 'Question', text: 'text-muted-foreground', chip: 'text-muted-foreground', border: 'border-border', rgb: 'var(--question)' },
+  decision: { label: 'Decision', text: 'text-muted-foreground', chip: 'text-muted-foreground', border: 'border-border', rgb: 'var(--decision)' },
+  noise: { label: 'Noise', text: 'text-subtle', chip: 'text-subtle', border: 'border-border', rgb: 'var(--noise)' },
 };
 
 export const PRIORITY_CLASS: Record<Priority, string> = {
-  P0: 'bg-urgent/15 text-urgent',
-  P1: 'bg-request/15 text-request',
-  P2: 'bg-white/10 text-muted-foreground',
-  P3: 'bg-white/5 text-muted-foreground/70',
+  P0: 'font-semibold text-urgent',
+  P1: 'font-medium text-foreground',
+  P2: 'text-muted-foreground',
+  P3: 'text-subtle',
 };
 
 export const FAILURE_LABEL: Record<FailureReason, string> = {
@@ -35,13 +35,6 @@ export function initials(name: string): string {
   const first = parts[0]?.[0] ?? '?';
   const last = parts.length > 1 ? (parts[parts.length - 1]?.[0] ?? '') : '';
   return (first + last).toUpperCase();
-}
-
-/** Stable per-person colour so avatars read as people, not decoration. */
-export function avatarColour(name: string): string {
-  let hash = 0;
-  for (let i = 0; i < name.length; i += 1) hash = (hash * 31 + name.charCodeAt(i)) >>> 0;
-  return `hsl(${hash % 360} 55% 42%)`;
 }
 
 export function clock(iso: string): string {

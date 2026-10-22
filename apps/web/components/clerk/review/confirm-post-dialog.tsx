@@ -33,14 +33,14 @@ export function ConfirmPostDialog({ item, onConfirm, onClose }: ConfirmPostDialo
           <h2 id={titleId} className="text-lg font-semibold" style={headingFont}>
             Post to {destination}?
           </h2>
-          <p className="mt-1 text-sm text-[#8A90A6]">
+          <p className="mt-1 text-sm text-muted-foreground">
             Nothing is posted publicly until you confirm. This is exactly what will be sent:
           </p>
-          <blockquote className="mt-4 rounded-lg border border-white/10 bg-black/20 px-4 py-3 text-sm leading-6">
+          <blockquote className="mt-4 rounded-lg border border-border bg-sunken px-4 py-3 text-sm leading-6">
             {formatPostBack(item)}
           </blockquote>
           {warnings.map((w) => (
-            <p key={w} className="mt-3 text-xs leading-5 text-[#F59E0B]" role="note">
+            <p key={w} className="mt-3 text-xs leading-5 text-warning" role="note">
               {w}
             </p>
           ))}
@@ -48,14 +48,14 @@ export function ConfirmPostDialog({ item, onConfirm, onClose }: ConfirmPostDialo
             <button
               type="button"
               onClick={onClose}
-              className="rounded-lg border border-white/10 px-3 py-2 text-sm hover:bg-white/5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#7C5CFF]"
+              className="rounded-lg border border-input bg-surface px-3 py-2 text-sm hover:bg-sunken focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary"
             >
               Cancel <Kbd>Esc</Kbd>
             </button>
             <button
               type="button"
               onClick={() => onConfirm(false)}
-              className="rounded-lg border border-white/10 px-3 py-2 text-sm hover:bg-white/5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#7C5CFF]"
+              className="rounded-lg border border-input bg-surface px-3 py-2 text-sm hover:bg-sunken focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary"
             >
               Approve only
             </button>
@@ -63,7 +63,7 @@ export function ConfirmPostDialog({ item, onConfirm, onClose }: ConfirmPostDialo
               type="button"
               data-autofocus
               onClick={() => onConfirm(true)}
-              className="rounded-lg bg-[#7C5CFF] px-4 py-2 text-sm font-semibold text-white hover:brightness-110 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#A593FF]"
+              className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-white hover:bg-primary-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
             >
               Approve &amp; post <Kbd>↵</Kbd>
             </button>

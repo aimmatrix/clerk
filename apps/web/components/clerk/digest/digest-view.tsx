@@ -43,11 +43,11 @@ function Skeleton() {
     <div className="space-y-4" aria-busy="true" aria-label="Loading digest">
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
         {Array.from({ length: 5 }).map((_, i) => (
-          <div key={i} className="h-[76px] animate-pulse rounded-xl bg-white/5" />
+          <div key={i} className="h-[76px] animate-pulse rounded-xl bg-sunken" />
         ))}
       </div>
       {Array.from({ length: 3 }).map((_, i) => (
-        <div key={i} className="h-40 animate-pulse rounded-2xl bg-white/5" />
+        <div key={i} className="h-40 animate-pulse rounded-xl bg-sunken" />
       ))}
     </div>
   );
@@ -123,53 +123,48 @@ export function DigestView({ communityId: requestedCommunity }: { communityId?: 
     digest.open.length + digest.overdue.length + digest.unansweredQuestions.length + digest.decisions.length === 0;
 
   return (
-    <div className="mx-auto w-full max-w-6xl px-4 py-8 sm:px-6">
-      <header className="mb-6 flex flex-wrap items-end justify-between gap-4">
+    <div className="mx-auto w-full max-w-[760px] px-4 py-14 sm:px-8">
+      <header className="mb-10 flex flex-col gap-6">
         <div>
-          <h1
-            className="text-3xl font-semibold tracking-[-0.02em] text-[#E8EAF2] sm:text-4xl"
-            style={{ fontFamily: 'var(--font-space-grotesk, inherit)' }}
-          >
-            Digest
-          </h1>
-          <p className="mt-1 text-sm text-[#8A90A6]">
-            {digest ? <>Generated {formatGenerated(digest.generatedAt)} · </> : null}
-            what is open, overdue and unanswered — at a glance.
+          <p className="eyebrow">{digest ? <>Generated {formatGenerated(digest.generatedAt)}</> : 'Weekly summary'}</p>
+          <h1 className="mt-2.5 text-4xl font-semibold leading-[1.15] tracking-[-0.025em]">Digest</h1>
+          <p className="mt-3 text-muted-foreground">
+            What is open, overdue and unanswered in your community, at a glance.
           </p>
           {status === 'sample' ? (
             <p
               role="status"
-              className="mt-2 inline-block rounded-full border border-[#F59E0B]/40 bg-[#F59E0B]/10 px-3 py-1 text-xs text-[#FBBF24]"
+              className="mt-3 text-[13px] text-warning"
             >
               Showing sample data — the digest API isn&rsquo;t reachable.
             </p>
           ) : null}
         </div>
 
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-2.5">
           <button
             type="button"
-            onClick={() => void refresh()}
-            disabled={refreshing}
-            className="rounded-lg border border-white/15 px-3 py-2 text-sm text-[#E8EAF2] transition hover:bg-white/5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#7C5CFF] disabled:opacity-50"
+            onClick={() => setDialogOpen(true)}
+            disabled={!digest}
+            className="inline-flex min-h-[44px] items-center rounded-lg bg-primary px-[18px] text-sm font-medium text-white transition-colors hover:bg-primary-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:opacity-50"
           >
-            {refreshing ? 'Refreshing…' : 'Refresh'}
+            Post to Discord…
           </button>
           <button
             type="button"
             onClick={() => void onCopy()}
             disabled={!digest}
-            className="rounded-lg border border-white/15 px-3 py-2 text-sm text-[#E8EAF2] transition hover:bg-white/5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#7C5CFF] disabled:opacity-50"
+            className="inline-flex min-h-[44px] items-center rounded-lg border border-input bg-surface px-4 text-sm text-foreground transition-colors hover:bg-sunken focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary disabled:opacity-50"
           >
-            Copy as Discord markdown
+            Copy as Markdown
           </button>
           <button
             type="button"
-            onClick={() => setDialogOpen(true)}
-            disabled={!digest}
-            className="rounded-lg bg-[#7C5CFF] px-4 py-2 text-sm font-medium text-white transition hover:bg-[#8F73FF] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#7C5CFF] disabled:opacity-50"
+            onClick={() => void refresh()}
+            disabled={refreshing}
+            className="inline-flex min-h-[44px] items-center rounded-lg px-4 text-sm text-muted-foreground transition-colors hover:bg-sunken hover:text-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary disabled:opacity-50"
           >
-            Post digest
+            {refreshing ? 'Refreshing…' : 'Refresh'}
           </button>
         </div>
       </header>
@@ -177,7 +172,7 @@ export function DigestView({ communityId: requestedCommunity }: { communityId?: 
       {!digest ? (
         <Skeleton />
       ) : (
-        <div className="space-y-5">
+        <div className="space-y-12">
           <StatStrip stats={digest.stats} />
 
           {empty ? (
@@ -216,7 +211,7 @@ export function DigestView({ communityId: requestedCommunity }: { communityId?: 
             )}
           </DigestSection>
 
-          <div className="grid gap-5 lg:grid-cols-2">
+          <div className="space-y-12">
             <DigestSection
               id="digest-questions"
               title="Unanswered questions"
@@ -262,12 +257,12 @@ export function DigestView({ communityId: requestedCommunity }: { communityId?: 
         {toast ? (
           <div
             role="status"
-            className={`pointer-events-auto rounded-xl border px-4 py-2.5 text-sm shadow-xl backdrop-blur-xl ${
+            className={`pointer-events-auto rounded-xl border bg-surface px-4 py-2.5 text-sm shadow-pop ${
               reduce ? '' : 'animate-in fade-in slide-in-from-bottom-2'
             } ${
               toast.kind === 'success'
-                ? 'border-[#34D399]/40 bg-[#34D399]/10 text-[#6EE7B7]'
-                : 'border-[#F43F5E]/40 bg-[#F43F5E]/10 text-[#FDA4AF]'
+                ? 'border-success/40 text-success'
+                : 'border-urgent/40 text-urgent'
             }`}
           >
             {toast.text}

@@ -13,10 +13,10 @@ export interface ApproveBurstProps {
 }
 
 /**
- * Emerald particle burst, centred on its (relatively positioned) parent.
+ * Soft green ring that fades outward from the centre of its (relatively positioned) parent.
  * Purely decorative: aria-hidden, pointer-events none, skipped entirely under reduced motion.
  */
-export function ApproveBurst({ count = 12, onComplete, colour = SUCCESS_COLOUR }: ApproveBurstProps) {
+export function ApproveBurst({ count = 8, onComplete, colour = SUCCESS_COLOUR }: ApproveBurstProps) {
   const reduced = useReducedMotion();
 
   const particles = useMemo(
@@ -24,11 +24,11 @@ export function ApproveBurst({ count = 12, onComplete, colour = SUCCESS_COLOUR }
       Array.from({ length: count }, (_, i) => {
         const angle = (i / count) * Math.PI * 2;
         // Alternate near/far rings so the burst reads as layered rather than a flat circle.
-        const distance = i % 2 === 0 ? 54 : 34;
+        const distance = i % 2 === 0 ? 30 : 20;
         return {
           x: Math.cos(angle) * distance,
           y: Math.sin(angle) * distance,
-          size: i % 3 === 0 ? 7 : 5,
+          size: 4,
           delay: (i % 4) * 0.015,
         };
       }),
@@ -49,11 +49,10 @@ export function ApproveBurst({ count = 12, onComplete, colour = SUCCESS_COLOUR }
             marginLeft: -p.size / 2,
             marginTop: -p.size / 2,
             background: colour,
-            boxShadow: `0 0 8px ${colour}`,
           }}
           initial={{ x: 0, y: 0, opacity: 1, scale: 1 }}
           animate={{ x: p.x, y: p.y, opacity: 0, scale: 0.3 }}
-          transition={{ duration: 0.55, delay: p.delay, ease: 'easeOut' }}
+          transition={{ duration: 0.4, delay: p.delay, ease: 'easeOut' }}
           onAnimationComplete={i === particles.length - 1 ? onComplete : undefined}
         />
       ))}

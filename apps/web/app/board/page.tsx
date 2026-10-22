@@ -20,7 +20,7 @@ export default function BoardPage({ searchParams }: BoardPageProps) {
     requested && UUID.test(requested) ? requested : (process.env.DEMO_COMMUNITY_ID ?? DEMO_COMMUNITY_ID);
 
   return (
-    <main className="mx-auto w-full max-w-[1400px] px-4 py-8 sm:px-6 lg:px-8">
+    <main className="mx-auto w-full max-w-[1360px] px-4 py-10 sm:px-8">
       <Board communityId={communityId} autoplay={searchParams.autoplay === '1'} />
     </main>
   );

@@ -111,18 +111,13 @@ export function BoardView({
   const emptyOverride = filter === 'all' ? undefined : `No ${TYPE_LABELS[filter].toLowerCase()} cards here.`;
 
   return (
-    <div className={cx('flex flex-col gap-5', className)}>
+    <div className={cx('flex flex-col gap-6', className)}>
       {hideHeader ? null : (
         <div className="flex flex-wrap items-end justify-between gap-3">
           <div>
-            <h1
-              className="text-3xl font-semibold tracking-[-0.02em] text-[#E8EAF2]"
-              style={{ fontFamily: 'var(--font-space-grotesk, inherit)' }}
-            >
-              Live board
-            </h1>
-            <p className="mt-1 text-sm text-[#8A90A6]">
-              Ranked by urgency. Nothing is posted without your approval.
+            <h1 className="page-heading">Board</h1>
+            <p className="mt-1 text-sm text-muted-foreground">
+              Everything Clerk captured, most urgent first. Nothing is posted without your approval.
             </p>
           </div>
           <LiveBadge pulseKey={pulseKey} status={status} />
@@ -132,7 +127,7 @@ export function BoardView({
       {error ? (
         <div
           role="alert"
-          className="rounded-xl border border-[#F43F5E]/40 bg-[#F43F5E]/10 px-4 py-3 text-sm text-[#E8EAF2]"
+          className="rounded-xl border border-urgent/30 bg-surface px-4 py-3 text-sm text-foreground"
         >
           Couldn&rsquo;t reach the live feed.
           {items.length > 0 ? ' Showing the last known state.' : ''} ({error})
@@ -147,7 +142,7 @@ export function BoardView({
         <>
           <FilterChips value={filter} counts={counts} onChange={setFilter} />
           <LayoutGroup id="clerk-board">
-            <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+            <div className="grid gap-5 border-t border-border pt-6 md:grid-cols-2 xl:grid-cols-4">
               {COLUMNS.map((column) => (
                 <BoardColumn
                   key={column.id}

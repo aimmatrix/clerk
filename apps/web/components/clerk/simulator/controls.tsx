@@ -51,21 +51,21 @@ export function Controls({ status, speed, ready, cursor, total, onPlay, onPause,
         type="button"
         onClick={playing ? onPause : onPlay}
         disabled={!ready}
-        className="inline-flex h-9 items-center gap-2 rounded-md bg-primary-600 px-4 text-sm font-medium text-white shadow-glow-primary transition hover:bg-primary-600/90 disabled:cursor-not-allowed disabled:opacity-50"
+        className="inline-flex min-h-[44px] min-w-[96px] items-center justify-center gap-2 rounded-lg bg-primary px-[18px] text-sm font-medium text-white transition-colors hover:bg-primary-600 disabled:cursor-not-allowed disabled:opacity-50"
       >
         {playing ? <PauseIcon /> : <PlayIcon />}
         {label}
       </button>
 
-      <div role="group" aria-label="Playback speed" className="inline-flex rounded-md border border-border bg-white/[0.03] p-0.5">
+      <div role="group" aria-label="Playback speed" className="inline-flex rounded-lg border border-border bg-surface p-0.5">
         {SPEEDS.map((s) => (
           <button
             key={s}
             type="button"
             aria-pressed={speed === s}
             onClick={() => onSpeed(s)}
-            className={`h-8 min-w-10 rounded-sm px-2.5 font-mono text-xs transition ${
-              speed === s ? 'bg-white/10 text-foreground' : 'text-muted-foreground hover:text-foreground'
+            className={`h-9 min-w-10 rounded-md px-2.5 font-mono text-xs transition-colors ${
+              speed === s ? 'bg-foreground text-background' : 'text-muted-foreground hover:text-foreground'
             }`}
           >
             {s}×
@@ -77,17 +77,17 @@ export function Controls({ status, speed, ready, cursor, total, onPlay, onPause,
         type="button"
         onClick={onReset}
         disabled={status === 'idle' && cursor === 0}
-        className="inline-flex h-9 items-center gap-2 rounded-md border border-border px-3 text-sm text-muted-foreground transition hover:bg-white/5 hover:text-foreground disabled:cursor-not-allowed disabled:opacity-40"
+        className="inline-flex min-h-[44px] items-center gap-2 rounded-lg border border-input bg-surface px-4 text-sm text-foreground transition-colors hover:bg-sunken hover:text-foreground disabled:cursor-not-allowed disabled:opacity-40"
       >
         <ResetIcon />
         Reset
       </button>
 
       <div className="flex min-w-32 items-center gap-2" role="status" aria-live="off">
-        <div className="h-1 w-24 overflow-hidden rounded-full bg-white/10" aria-hidden>
-          <div className="h-full rounded-full bg-accent transition-[width] duration-300" style={{ width: `${progress}%` }} />
+        <div className="h-1 w-24 overflow-hidden rounded-full bg-sunken" aria-hidden>
+          <div className="h-full rounded-full bg-foreground transition-[width] duration-300" style={{ width: `${progress}%` }} />
         </div>
-        <span className="font-mono text-xs text-muted-foreground tabular-nums">
+        <span className="font-mono text-xs text-subtle tabular-nums">
           {Math.min(cursor, total)}/{total}
         </span>
       </div>

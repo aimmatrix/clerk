@@ -1,19 +1,19 @@
 import type { ItemType, Priority } from "@clerk/core";
 
 export const TYPE_META: Record<ItemType, { label: string; colour: string }> = {
-  request: { label: "Request", colour: "#F59E0B" },
-  task: { label: "Task", colour: "#7C5CFF" },
-  event: { label: "Event", colour: "#22D3EE" },
-  question: { label: "Question", colour: "#60A5FA" },
-  decision: { label: "Decision", colour: "#34D399" },
-  noise: { label: "Noise", colour: "#4B5163" },
+  request: { label: "Request", colour: "#52525B" },
+  task: { label: "Task", colour: "#52525B" },
+  event: { label: "Event", colour: "#52525B" },
+  question: { label: "Question", colour: "#52525B" },
+  decision: { label: "Decision", colour: "#52525B" },
+  noise: { label: "Noise", colour: "#A1A1AA" },
 };
 
 export const PRIORITY_META: Record<Priority, { label: string; colour: string }> = {
-  P0: { label: "P0 · Urgent", colour: "#F43F5E" },
-  P1: { label: "P1 · High", colour: "#F59E0B" },
-  P2: { label: "P2 · Normal", colour: "#60A5FA" },
-  P3: { label: "P3 · Low", colour: "#8A90A6" },
+  P0: { label: "P0 · Urgent", colour: "#C2410C" },
+  P1: { label: "P1 · High", colour: "#18181B" },
+  P2: { label: "P2 · Normal", colour: "#52525B" },
+  P3: { label: "P3 · Low", colour: "#71717A" },
 };
 
 export const TYPE_OPTIONS: ItemType[] = ["request", "task", "event", "question", "decision", "noise"];

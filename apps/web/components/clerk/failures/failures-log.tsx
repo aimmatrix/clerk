@@ -12,7 +12,7 @@ import { useFailureFeed } from './use-failure-feed';
 
 const ACTOR_KEY = 'clerk:actor';
 const FOCUS_RING =
-  'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#22D3EE]';
+  'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary';
 
 type ReasonFilter = FailureReason | 'all';
 
@@ -115,7 +115,7 @@ export function FailuresLog({ communityId }: { communityId: string }) {
     });
 
   return (
-    <section aria-label="Messages Clerk couldn’t handle" className="space-y-4">
+    <section aria-label="Messages Clerk couldn’t handle" className="space-y-5">
       {/* Toolbar */}
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div className="flex flex-wrap items-center gap-2" role="group" aria-label="Filter by reason">
@@ -123,7 +123,7 @@ export function FailuresLog({ communityId }: { communityId: string }) {
             All <Count n={sorted.length} />
           </FilterChip>
           {REASON_ORDER.filter((r) => counts[r]).map((r) => (
-            <FilterChip key={r} active={filter === r} colour={REASON_META[r].colour} onClick={() => setFilter(r)}>
+            <FilterChip key={r} active={filter === r} onClick={() => setFilter(r)}>
               {REASON_META[r].label} <Count n={counts[r] ?? 0} />
             </FilterChip>
           ))}
@@ -133,32 +133,32 @@ export function FailuresLog({ communityId }: { communityId: string }) {
         </div>
 
         <div className="flex items-center gap-3">
-          <label className="flex items-center gap-2 text-xs text-[#8A90A6]">
+          <label className="flex items-center gap-2 text-xs text-muted-foreground">
             Claiming as
             <input
               value={actor}
               onChange={(e) => updateActor(e.target.value)}
               placeholder="Organiser"
               maxLength={40}
-              className={`w-28 rounded-lg border border-white/[0.08] bg-white/[0.04] px-2.5 py-1.5 text-sm text-[#E8EAF2] placeholder:text-[#8A90A6]/70 ${FOCUS_RING}`}
+              className={`w-28 rounded-lg border border-input bg-surface px-2.5 py-1.5 text-sm text-foreground placeholder:text-subtle ${FOCUS_RING}`}
             />
           </label>
           <SourceBadge source={feed.source} pulseKey={feed.failures.length} reduceMotion={!!reduceMotion} />
         </div>
       </div>
 
-      <p className="text-sm text-[#8A90A6]" aria-live="off">
-        <span className="font-mono tabular-nums text-[#E8EAF2]">{unclaimedCount}</span> waiting for a human ·{' '}
-        <span className="font-mono tabular-nums text-[#E8EAF2]">{sorted.length - unclaimedCount}</span> claimed
+      <p className="text-sm text-muted-foreground" aria-live="off">
+        <span className="font-mono tabular-nums text-foreground">{unclaimedCount}</span> waiting for a human ·{' '}
+        <span className="font-mono tabular-nums text-foreground">{sorted.length - unclaimedCount}</span> claimed
       </p>
 
       {error && (
         <div
           role="alert"
-          className="flex items-start justify-between gap-3 rounded-xl border border-[#F43F5E]/40 bg-[#F43F5E]/10 px-4 py-3 text-sm text-[#E8EAF2]"
+          className="flex items-start justify-between gap-3 rounded-xl border border-urgent/30 bg-surface px-4 py-3 text-sm text-foreground"
         >
           <span>{error}</span>
-          <button onClick={() => setError(null)} className={`shrink-0 rounded text-[#8A90A6] hover:text-white ${FOCUS_RING}`}>
+          <button onClick={() => setError(null)} className={`shrink-0 rounded text-muted-foreground hover:text-foreground ${FOCUS_RING}`}>
             Dismiss
           </button>
         </div>
@@ -169,14 +169,14 @@ export function FailuresLog({ communityId }: { communityId: string }) {
 
       {/* Table */}
       <div
-        className="overflow-x-auto rounded-2xl border border-white/[0.08] bg-[#141826]/60 backdrop-blur-[16px]"
+        className="panel overflow-x-auto"
         role="region"
         aria-label="Couldn’t-handle log table"
         tabIndex={0}
       >
         <table className="w-full min-w-[760px] border-collapse text-left text-sm">
           <thead>
-            <tr className="border-b border-white/[0.08] text-xs uppercase tracking-wide text-[#8A90A6]">
+            <tr className="meta-label border-b border-border !text-subtle">
               <th scope="col" className="px-4 py-3 font-medium">Message</th>
               <th scope="col" className="px-4 py-3 font-medium">Why Clerk stopped</th>
               <th scope="col" className="px-4 py-3 font-medium">Confidence</th>
@@ -200,42 +200,42 @@ export function FailuresLog({ communityId }: { communityId: string }) {
                     animate={{
                       opacity: 1,
                       y: 0,
-                      backgroundColor: fresh.has(f.id) ? ['#22D3EE26', '#22D3EE00'] : '#22D3EE00',
+                      backgroundColor: fresh.has(f.id) ? ['#F1EFEB', '#F1EFEB00'] : '#F1EFEB00',
                     }}
                     exit={{ opacity: 0 }}
                     transition={{ type: 'spring', stiffness: 260, damping: 24, backgroundColor: { duration: 1.6 } }}
-                    className="border-b border-white/[0.06] last:border-b-0"
+                    className="border-b border-border last:border-b-0"
                   >
                     <tr className="align-top">
                       <td className={`max-w-[26rem] px-4 py-3 ${owner ? 'opacity-55' : ''}`}>
-                        <div className="mb-0.5 text-xs font-medium text-[#8A90A6]">{f.authorName ?? 'Unknown author'}</div>
-                        <p className="line-clamp-2 text-[#E8EAF2]">{f.messageContent ?? 'Message text not available.'}</p>
+                        <div className="mb-0.5 text-xs text-subtle">{f.authorName ?? 'Unknown author'}</div>
+                        <p className="line-clamp-2 text-foreground">{f.messageContent ?? 'Message text not available.'}</p>
                         <button
                           onClick={() => toggle(f.id)}
                           aria-expanded={isOpen}
                           aria-controls={detailId}
-                          className={`mt-1 rounded text-xs text-[#22D3EE] hover:underline ${FOCUS_RING}`}
+                          className={`mt-1 rounded text-xs text-primary hover:underline ${FOCUS_RING}`}
                         >
                           {isOpen ? 'Hide details' : 'Why?'}
                         </button>
                       </td>
                       <td className={`px-4 py-3 ${owner ? 'opacity-55' : ''}`}><ReasonBadge reason={f.reason} /></td>
                       <td className={`px-4 py-3 ${owner ? 'opacity-55' : ''}`}><ConfidenceMeter confidence={f.confidence} /></td>
-                      <td className={`whitespace-nowrap px-4 py-3 text-[#8A90A6] ${owner ? 'opacity-55' : ''}`}>
+                      <td className={`whitespace-nowrap px-4 py-3 text-subtle ${owner ? 'opacity-55' : ''}`}>
                         <time dateTime={f.createdAt} title={londonTimestamp(f.createdAt)} suppressHydrationWarning>
                           {now === null ? londonTimestamp(f.createdAt) : relativeTime(f.createdAt, now)}
                         </time>
                       </td>
                       <td className="px-4 py-3 text-right">
                         {owner ? (
-                          <span className="inline-flex items-center gap-1.5 whitespace-nowrap text-sm text-[#34D399]">
-                            <span aria-hidden>✓</span> Claimed by {owner}
+                          <span className="inline-flex items-center gap-1.5 whitespace-nowrap text-sm text-muted-foreground">
+                            Claimed by {owner}
                           </span>
                         ) : (
                           <button
                             onClick={() => handleClaim(f)}
                             disabled={claiming.has(f.id)}
-                            className={`rounded-lg bg-[#7C5CFF] px-3.5 py-1.5 text-sm font-medium text-white transition-colors hover:bg-[#6B4CEB] disabled:opacity-60 ${FOCUS_RING}`}
+                            className={`rounded-lg border border-input bg-surface px-3.5 py-1.5 text-sm font-medium text-foreground transition-colors hover:bg-sunken disabled:opacity-60 ${FOCUS_RING}`}
                           >
                             Claim
                           </button>
@@ -245,12 +245,12 @@ export function FailuresLog({ communityId }: { communityId: string }) {
                     {isOpen && (
                       <tr id={detailId}>
                         <td colSpan={5} className="px-4 pb-4">
-                          <div className="space-y-2 rounded-xl border border-white/[0.06] bg-black/20 p-3">
-                            <p className="text-[#E8EAF2]">{REASON_META[f.reason].hint}</p>
-                            <p className="font-mono text-xs text-[#8A90A6]">
+                          <div className="space-y-2 rounded-lg bg-background p-3">
+                            <p className="text-foreground">{REASON_META[f.reason].hint}</p>
+                            <p className="font-mono text-xs text-muted-foreground">
                               Raw model output
                             </p>
-                            <pre className="max-h-48 overflow-auto whitespace-pre-wrap break-words font-mono text-xs text-[#8A90A6]">
+                            <pre className="max-h-48 overflow-auto whitespace-pre-wrap break-words font-mono text-xs text-muted-foreground">
                               {f.raw == null ? 'Nothing was captured.' : typeof f.raw === 'string' ? f.raw : JSON.stringify(f.raw, null, 2)}
                             </pre>
                           </div>
@@ -267,21 +267,22 @@ export function FailuresLog({ communityId }: { communityId: string }) {
         {!feed.loading && visible.length === 0 && <EmptyState filtered={sorted.length > 0} />}
       </div>
 
-      {feed.error && <p role="alert" className="text-sm text-[#F43F5E]">Live updates paused: {feed.error}</p>}
+      {feed.error && <p role="alert" className="text-sm text-urgent">Live updates paused: {feed.error}</p>}
     </section>
   );
 }
 
 function FilterChip(props: { active: boolean; colour?: string; onClick: () => void; children: React.ReactNode }) {
-  const { active, colour = '#7C5CFF', onClick, children } = props;
+  const { active, onClick, children } = props;
   return (
     <button
       onClick={onClick}
       aria-pressed={active}
-      className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-medium transition-colors ${FOCUS_RING} ${
-        active ? 'text-white' : 'border-white/[0.08] text-[#8A90A6] hover:text-[#E8EAF2]'
+      className={`inline-flex min-h-[34px] items-center gap-1.5 rounded-full border px-3 text-[13px] transition-colors ${FOCUS_RING} ${
+        active
+          ? 'border-foreground bg-foreground text-background'
+          : 'border-border bg-surface text-muted-foreground hover:text-foreground'
       }`}
-      style={active ? { backgroundColor: `${colour}33`, borderColor: `${colour}80` } : undefined}
     >
       {children}
     </button>
@@ -296,15 +297,15 @@ function SourceBadge({ source, pulseKey, reduceMotion }: { source: 'live' | 'moc
   const live = source === 'live';
   return (
     <span
-      className="inline-flex items-center gap-1.5 rounded-full border border-white/[0.08] px-2.5 py-1 text-xs text-[#8A90A6]"
+      className="inline-flex items-center gap-2 text-[13px] text-muted-foreground"
       title={live ? 'Updating in realtime' : 'Showing sample data — not connected to a live community'}
     >
       <motion.span
         key={pulseKey}
         aria-hidden
-        className="h-2 w-2 rounded-full"
-        style={{ backgroundColor: live ? '#22D3EE' : '#4B5163' }}
-        animate={live && !reduceMotion ? { scale: [1, 1.8, 1], opacity: [1, 0.6, 1] } : undefined}
+        className="h-[7px] w-[7px] rounded-full"
+        style={{ backgroundColor: live ? '#15803D' : '#A1A1AA' }}
+        animate={live && !reduceMotion ? { opacity: [1, 0.5, 1] } : undefined}
         transition={{ duration: 0.8 }}
       />
       {live ? 'Live' : 'Sample data'}
@@ -316,9 +317,9 @@ function SkeletonRows() {
   return (
     <tbody aria-busy="true">
       {[0, 1, 2].map((i) => (
-        <tr key={i} className="border-b border-white/[0.06]">
+        <tr key={i} className="border-b border-border">
           <td colSpan={5} className="px-4 py-4">
-            <div className="h-9 rounded-lg bg-white/[0.05] motion-safe:animate-pulse" />
+            <div className="h-9 rounded-lg bg-sunken motion-safe:animate-pulse" />
           </td>
         </tr>
       ))}
@@ -329,10 +330,10 @@ function SkeletonRows() {
 function EmptyState({ filtered }: { filtered: boolean }) {
   return (
     <div className="px-6 py-14 text-center">
-      <p className="text-base font-medium text-[#E8EAF2]">
+      <p className="text-base font-medium text-foreground">
         {filtered ? 'Nothing matches those filters.' : 'Nothing has slipped through. Yet.'}
       </p>
-      <p className="mx-auto mt-1 max-w-md text-sm text-[#8A90A6]">
+      <p className="mx-auto mt-1 max-w-md text-sm text-muted-foreground">
         {filtered
           ? 'Clear a filter to see everything Clerk has set aside.'
           : 'When Clerk isn’t sure about a message, it will appear here rather than guess.'}

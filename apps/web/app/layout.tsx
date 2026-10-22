@@ -1,9 +1,7 @@
 import { Suspense } from "react";
 import type { Metadata, Viewport } from "next";
-import "@fontsource-variable/inter";
-import "@fontsource-variable/space-grotesk";
-import "@fontsource-variable/jetbrains-mono";
-import { GlowBackground } from "@/components/clerk/brand/glow-background";
+import "@fontsource-variable/geist";
+import "@fontsource-variable/geist-mono";
 import { SiteNav } from "@/components/clerk/brand/site-nav";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import "./globals.css";
@@ -25,16 +23,13 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#0B0D14",
-  colorScheme: "dark",
+  themeColor: "#FAFAF9",
+  colorScheme: "light",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html
-      lang="en-GB"
-      className="dark"
-    >
+    <html lang="en-GB">
       <body>
         <a
           href="#main"
@@ -42,9 +37,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         >
           Skip to content
         </a>
-        <GlowBackground />
         <TooltipProvider delayDuration={200}>
-          <Suspense fallback={<div className="h-14" />}><SiteNav /></Suspense>
+          <Suspense fallback={<div className="h-14 border-b border-border bg-surface" />}><SiteNav /></Suspense>
           <main id="main">{children}</main>
         </TooltipProvider>
       </body>

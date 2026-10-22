@@ -2,32 +2,23 @@
 
 import type { ReactNode } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
-import type { Item, ItemType } from '@clerk/core';
+import type { Item } from '@clerk/core';
 import { formatDue, initials } from './format';
 
 export type SectionTone = 'urgent' | 'primary' | 'question' | 'decision';
 
-const TONES: Record<SectionTone, { text: string; dot: string; ring: string }> = {
-  urgent: { text: 'text-[#F43F5E]', dot: 'bg-[#F43F5E]', ring: 'border-[#F43F5E]/30' },
-  primary: { text: 'text-[#B3A1FF]', dot: 'bg-[#7C5CFF]', ring: 'border-white/10' },
-  question: { text: 'text-[#60A5FA]', dot: 'bg-[#60A5FA]', ring: 'border-white/10' },
-  decision: { text: 'text-[#34D399]', dot: 'bg-[#34D399]', ring: 'border-white/10' },
-};
-
-const TYPE_COLOUR: Record<ItemType, string> = {
-  request: '#F59E0B',
-  task: '#7C5CFF',
-  event: '#22D3EE',
-  question: '#60A5FA',
-  decision: '#34D399',
-  noise: '#4B5163',
+const TONES: Record<SectionTone, { text: string }> = {
+  urgent: { text: 'text-urgent' },
+  primary: { text: 'text-foreground' },
+  question: { text: 'text-foreground' },
+  decision: { text: 'text-foreground' },
 };
 
 const PRIORITY_COLOUR: Record<Item['priority'], string> = {
-  P0: 'bg-[#F43F5E]/15 text-[#FB7185] border-[#F43F5E]/40',
-  P1: 'bg-[#F59E0B]/15 text-[#FBBF24] border-[#F59E0B]/40',
-  P2: 'bg-white/5 text-[#C5C9D8] border-white/15',
-  P3: 'bg-white/5 text-[#8A90A6] border-white/10',
+  P0: 'font-semibold text-urgent',
+  P1: 'font-medium text-foreground',
+  P2: 'text-muted-foreground',
+  P3: 'text-subtle',
 };
 
 export function DigestSection({
@@ -47,19 +38,15 @@ export function DigestSection({
 }) {
   const t = TONES[tone];
   return (
-    <section
-      aria-labelledby={id}
-      className={`rounded-2xl border ${t.ring} bg-[#141826]/60 p-5 backdrop-blur-xl`}
-    >
-      <header className="mb-4 flex items-baseline gap-3">
-        <span aria-hidden className={`size-2 shrink-0 translate-y-[-1px] rounded-full ${t.dot}`} />
-        <h2 id={id} className={`text-lg font-semibold tracking-tight ${t.text}`}>
+    <section aria-labelledby={id}>
+      <header className="flex items-baseline justify-between gap-3 border-b border-foreground pb-2.5">
+        <h2 id={id} className={`text-[13px] font-semibold ${t.text}`}>
           {title}
         </h2>
-        <span className="rounded-full bg-white/5 px-2 py-0.5 font-mono text-xs tabular-nums text-[#8A90A6]">
-          {count}
+        <span className="flex items-baseline gap-3 text-xs text-subtle">
+          {hint ? <span className="hidden sm:inline">{hint}</span> : null}
+          <span className="font-mono tabular-nums">{count}</span>
         </span>
-        {hint ? <span className="ml-auto hidden text-xs text-[#8A90A6] sm:inline">{hint}</span> : null}
       </header>
       {children}
     </section>
@@ -67,7 +54,7 @@ export function DigestSection({
 }
 
 export function EmptyNote({ children }: { children: ReactNode }) {
-  return <p className="rounded-lg border border-dashed border-white/10 px-4 py-3 text-sm text-[#8A90A6]">{children}</p>;
+  return <p className="mt-4 rounded-lg border border-dashed border-input px-4 py-3 text-sm text-subtle">{children}</p>;
 }
 
 export function OwnerAvatar({ name, size = 'md' }: { name: string | null; size?: 'sm' | 'md' }) {
@@ -76,7 +63,7 @@ export function OwnerAvatar({ name, size = 'md' }: { name: string | null; size?:
     return (
       <span
         aria-hidden
-        className={`${dim} inline-flex shrink-0 items-center justify-center rounded-full border border-dashed border-white/20 text-[#8A90A6]`}
+        className={`${dim} inline-flex shrink-0 items-center justify-center rounded-full border border-dashed border-input text-subtle`}
       >
         ?
       </span>
@@ -85,7 +72,7 @@ export function OwnerAvatar({ name, size = 'md' }: { name: string | null; size?:
   return (
     <span
       aria-hidden
-      className={`${dim} inline-flex shrink-0 items-center justify-center rounded-full bg-[#7C5CFF]/25 font-semibold text-[#D4CBFF]`}
+      className={`${dim} inline-flex shrink-0 items-center justify-center rounded-full bg-sunken font-semibold text-muted-foreground`}
     >
       {initials(name)}
     </span>
@@ -113,37 +100,29 @@ export function ItemRow({
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0 }}
       transition={{ type: 'spring', stiffness: 260, damping: 24 }}
-      className="flex items-start gap-3 rounded-xl border border-white/5 bg-white/[0.03] px-3 py-2.5"
+      className="flex items-start gap-3 border-b border-border py-3.5"
     >
       {showOwner ? <OwnerAvatar name={item.ownerName} /> : null}
       <div className="min-w-0 flex-1">
         <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
-          <span
-            className="rounded-md px-1.5 py-0.5 text-[11px] font-medium uppercase tracking-wide"
-            style={{ color: TYPE_COLOUR[item.type], backgroundColor: `${TYPE_COLOUR[item.type]}1F` }}
-          >
-            {item.type}
-          </span>
-          <span
-            className={`rounded-md border px-1.5 py-0.5 font-mono text-[11px] ${PRIORITY_COLOUR[item.priority]}`}
-            title={`Priority ${item.priority}`}
-          >
+          <span className="font-mono text-[11px] uppercase tracking-[0.05em] text-subtle">{item.type}</span>
+          <span className={`font-mono text-[11px] ${PRIORITY_COLOUR[item.priority]}`} title={`Priority ${item.priority}`}>
             {item.priority}
           </span>
-          <p className="text-sm font-medium text-[#E8EAF2]">{item.title}</p>
+          <p className="text-[15px] text-foreground">{item.title}</p>
         </div>
 
-        <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-0.5 text-xs text-[#8A90A6]">
+        <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-0.5 text-[13px] text-subtle">
           {showOwner ? <span>{item.ownerName ?? 'Unassigned'}</span> : null}
           {due ? (
-            <span className={due.overdue ? 'font-medium text-[#F43F5E]' : undefined}>{due.label}</span>
+            <span className={due.overdue ? 'font-medium text-urgent' : undefined}>{due.label}</span>
           ) : null}
           {item.sourceLink ? (
             <a
               href={item.sourceLink}
               target="_blank"
               rel="noopener noreferrer"
-              className="rounded text-[#7C5CFF] underline-offset-2 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#7C5CFF]"
+              className="rounded text-primary underline-offset-2 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary"
             >
               Source<span className="sr-only"> message for {item.title} (opens in a new tab)</span>
             </a>
@@ -151,8 +130,8 @@ export function ItemRow({
         </div>
 
         {showReply && item.suggestedReply ? (
-          <blockquote className="mt-2 border-l-2 border-[#60A5FA]/50 pl-3 text-xs italic text-[#A9B0C6]">
-            <span className="not-italic text-[#60A5FA]">Drafted reply: </span>
+          <blockquote className="mt-2 border-l-2 border-input pl-3 text-[13px] text-muted-foreground">
+            <span className="text-subtle">Draft: </span>
             {item.suggestedReply}
           </blockquote>
         ) : null}
@@ -163,7 +142,7 @@ export function ItemRow({
 
 export function ItemList({ children }: { children: ReactNode }) {
   return (
-    <ul className="space-y-2">
+    <ul>
       <AnimatePresence initial={false}>{children}</AnimatePresence>
     </ul>
   );

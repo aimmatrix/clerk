@@ -23,7 +23,7 @@ function ReviewLink({ id }: { id: string }) {
   return (
     <a
       href={`/review?focus=${encodeURIComponent(id)}`}
-      className="inline-flex rounded-md px-2 py-1 text-[12px] font-medium text-[#7C5CFF] outline-none hover:bg-[#7C5CFF]/15 focus-visible:ring-2 focus-visible:ring-[#7C5CFF]"
+      className="inline-flex rounded-md px-2 py-1 text-[12px] font-medium text-primary outline-none hover:bg-sunken focus-visible:ring-2 focus-visible:ring-primary"
     >
       Review
     </a>
@@ -37,25 +37,22 @@ export function BoardColumn({ column, items, layoutIds, now, compact, emptyOverr
     <section
       aria-labelledby={headingId}
       data-column={column.id}
-      className="flex min-h-[12rem] min-w-0 flex-col rounded-2xl border border-white/[0.08] bg-[#141826]/60 backdrop-blur-xl"
+      className="flex min-w-0 flex-col"
     >
-      <header className="flex items-center justify-between gap-2 border-b border-white/[0.06] px-3.5 py-3">
-        <div className="flex min-w-0 items-center gap-2">
-          <span className="h-2 w-2 shrink-0 rounded-full" style={{ background: column.accent }} aria-hidden />
-          <h2 id={headingId} className="text-[13px] font-semibold tracking-tight text-[#E8EAF2]">
-            {column.title}
-          </h2>
-          <span className="truncate text-[11px] text-[#8A90A6]">{column.hint}</span>
-        </div>
-        <span
-          className="min-w-[1.5rem] rounded-full bg-white/[0.06] px-1.5 py-0.5 text-center font-mono text-[11px] tabular-nums text-[#E8EAF2]"
-          aria-label={`${items.length} ${items.length === 1 ? 'card' : 'cards'}`}
-        >
-          {items.length}
-        </span>
+      <header className="flex items-baseline justify-between gap-2 px-0.5 pb-3">
+        <h2 id={headingId} className="text-sm font-semibold text-foreground">
+          {column.title}
+          <span
+            className="ml-1.5 font-mono text-xs font-normal tabular-nums text-subtle"
+            aria-label={`${items.length} ${items.length === 1 ? 'card' : 'cards'}`}
+          >
+            {items.length}
+          </span>
+        </h2>
+        <span className="truncate text-xs text-subtle">{column.hint}</span>
       </header>
 
-      <div className="flex-1 overflow-y-auto p-2.5 lg:max-h-[calc(100vh-17rem)]">
+      <div className="flex-1 lg:max-h-[calc(100vh-17rem)] lg:overflow-y-auto">
         <div className="flex flex-col gap-2.5" role="group" aria-label={`${column.title} cards`}>
           {/*
             No AnimatePresence on purpose. Cards travel between columns via their shared layoutId, which needs no
@@ -74,14 +71,14 @@ export function BoardColumn({ column, items, layoutIds, now, compact, emptyOverr
                 now={now ?? undefined}
                 compact={compact}
                 burstOnApprove={false}
-                className={hot ? '!border-[#F43F5E]/45' : undefined}
+                className={hot ? '!border-urgent/50' : undefined}
                 actions={item.status === 'pending' ? <ReviewLink id={item.id} /> : undefined}
               />
             );
           })}
         </div>
         {items.length === 0 ? (
-          <p className="px-2 py-6 text-center text-[12px] leading-5 text-[#8A90A6]">{emptyOverride ?? column.empty}</p>
+          <p className="rounded-[10px] border border-dashed border-input px-4 py-5 text-center text-[13px] leading-5 text-subtle">{emptyOverride ?? column.empty}</p>
         ) : null}
       </div>
     </section>

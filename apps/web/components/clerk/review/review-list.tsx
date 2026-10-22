@@ -4,7 +4,7 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useEffect, useRef } from "react";
 import type { Item } from "@clerk/core";
 import { Avatar, PriorityBadge, TypeChip, monoFont } from "./chips";
-import { TYPE_META, formatDueShort, isOverdue } from "./format";
+import { formatDueShort, isOverdue } from "./format";
 import type { ExitKind } from "./types";
 
 interface ReviewListProps {
@@ -23,11 +23,13 @@ export function ReviewList({ items, selectedId, exitKind, onSelect }: ReviewList
   }, [selectedId]);
 
   return (
-    <ul className="flex flex-col gap-2" aria-label="Items awaiting review">
+    <ul
+      className={items.length > 0 ? "overflow-hidden rounded-xl border border-border bg-surface" : undefined}
+      aria-label="Items awaiting review"
+    >
       <AnimatePresence initial={false} custom={exitKind}>
         {items.map((item) => {
           const selected = item.id === selectedId;
-          const colour = TYPE_META[item.type].colour;
           const overdue = isOverdue(item.dueAt);
           return (
             <motion.li
@@ -54,32 +56,27 @@ export function ReviewList({ items, selectedId, exitKind, onSelect }: ReviewList
                 type="button"
                 onClick={() => onSelect(item.id)}
                 aria-current={selected ? "true" : undefined}
-                className={`relative w-full overflow-hidden rounded-xl border px-4 py-3 text-left transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#7C5CFF] ${
-                  selected
-                    ? "border-[#7C5CFF]/60 bg-[#7C5CFF]/10"
-                    : "border-white/[0.08] bg-[#141826]/60 hover:bg-[#141826]/90"
+                className={`relative w-full border-b border-l-2 border-b-border px-4 py-3.5 text-left transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary ${
+                  selected ? "border-l-foreground bg-sunken/60" : "border-l-transparent hover:bg-sunken/40"
                 }`}
               >
-                <span aria-hidden className="absolute inset-y-0 left-0 w-1" style={{ background: colour }} />
-                <span className="flex items-center gap-2">
+                <span className="flex items-center justify-between gap-2">
                   <TypeChip type={item.type} />
-                  <PriorityBadge priority={item.priority} short />
-                  <span
-                    className="ml-auto text-xs tabular-nums text-[#8A90A6]"
-                    style={monoFont}
-                    title="Urgency score"
-                  >
-                    {item.urgencyScore}
+                  <span className="flex items-center gap-3">
+                    <PriorityBadge priority={item.priority} short />
+                    <span className="text-xs tabular-nums text-subtle" style={monoFont} title="Urgency score">
+                      {item.urgencyScore}
+                    </span>
                   </span>
                 </span>
-                <span className="mt-2 line-clamp-2 block text-sm font-medium leading-5 text-[#E8EAF2]">
+                <span className="mt-1.5 line-clamp-2 block text-sm font-medium leading-5 text-foreground">
                   {item.title}
                 </span>
-                <span className="mt-2 flex items-center gap-2 text-xs text-[#8A90A6]">
+                <span className="mt-2 flex items-center gap-2 text-xs text-subtle">
                   <Avatar name={item.ownerName} size={20} />
-                  <span className={item.ownerName ? "" : "text-[#F59E0B]"}>{item.ownerName ?? "No owner"}</span>
+                  <span className={item.ownerName ? "" : "italic"}>{item.ownerName ?? "No owner"}</span>
                   <span aria-hidden>·</span>
-                  <span className={overdue ? "text-[#F43F5E]" : ""}>{formatDueShort(item.dueAt)}</span>
+                  <span className={overdue ? "text-urgent" : ""}>{formatDueShort(item.dueAt)}</span>
                 </span>
               </button>
             </motion.li>

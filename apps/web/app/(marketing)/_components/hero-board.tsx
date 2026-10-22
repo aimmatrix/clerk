@@ -59,7 +59,7 @@ function Avatar({ name, className }: { name: string; className?: string }) {
     <span
       aria-hidden="true"
       className={cn(
-        "grid h-5 w-5 shrink-0 place-items-center rounded-full bg-primary/25 text-[9px] font-semibold text-primary-300",
+        "grid h-5 w-5 shrink-0 place-items-center rounded-full bg-sunken text-[9px] font-semibold text-muted-foreground",
         className,
       )}
     >
@@ -69,8 +69,8 @@ function Avatar({ name, className }: { name: string; className?: string }) {
 }
 
 function confidenceColour(c: number) {
-  if (c >= 0.8) return "text-success";
-  if (c >= 0.6) return "text-request";
+  if (c >= 0.8) return "text-subtle";
+  if (c >= 0.6) return "text-muted-foreground";
   return "text-urgent";
 }
 
@@ -88,30 +88,29 @@ const MiniCard = React.forwardRef<HTMLDivElement, MiniCardProps>(function MiniCa
       ref={ref}
       layout={!reduce}
       layoutId={reduce ? undefined : `hero-card-${item.id}`}
-      initial={reduce ? { opacity: 0 } : { opacity: 0, x: -56, scale: 0.9 }}
+      initial={reduce ? { opacity: 0 } : { opacity: 0, x: -24 }}
       animate={{
         opacity: posted ? 0.82 : 1,
         x: 0,
-        scale: approved && !reduce ? 1.03 : 1,
       }}
       exit={reduce ? { opacity: 0 } : { opacity: 0, y: 8 }}
       transition={reduce ? { duration: 0.2 } : SPRING}
       className={cn(
-        "rounded-lg border bg-[rgb(var(--surface-solid)/0.9)] p-2.5 text-left",
-        approved ? "border-success/50 shadow-glow" : "border-white/10",
+        "rounded-[10px] border bg-surface p-3 text-left",
+        approved ? "border-success/60" : "border-border",
       )}
     >
       <div className="mb-1.5 flex flex-wrap items-center justify-between gap-1">
         <TypeChip type={item.type} compact />
         <PriorityBadge priority={item.priority} />
       </div>
-      <p className="text-xs font-medium leading-snug text-foreground">{item.title}</p>
+      <p className="text-[13px] font-medium leading-snug text-foreground">{item.title}</p>
       {posted ? (
-        <p className="mt-2 text-[10px] leading-snug text-success">{item.postBack}</p>
+        <p className="mt-2 text-[11px] leading-snug text-success">{item.postBack}</p>
       ) : (
         <div className="mt-2 flex flex-wrap items-center justify-between gap-x-2 gap-y-1 text-[10px] text-muted-foreground">
           <span className="flex min-w-0 max-w-full items-center gap-1.5">
-            <Avatar name={item.owner ?? "??"} className={item.owner ? "" : "bg-white/10 text-muted-foreground"} />
+            <Avatar name={item.owner ?? "??"} className={item.owner ? "" : "bg-sunken text-muted-foreground"} />
             <span className="truncate">{item.owner ?? "Unassigned"}</span>
           </span>
           <span className="flex shrink-0 items-center gap-1.5 font-mono tabular">
@@ -127,23 +126,18 @@ const MiniCard = React.forwardRef<HTMLDivElement, MiniCardProps>(function MiniCa
 function Column({
   title,
   count,
-  accent,
   className,
   children,
 }: {
   title: string;
   count: number;
-  accent: string;
   className?: string;
   children: React.ReactNode;
 }) {
   return (
-    <div className={cn("flex min-w-0 flex-col gap-2 rounded-lg bg-black/20 p-2", className)}>
+    <div className={cn("flex min-w-0 flex-col gap-2 p-1", className)}>
       <div className="flex items-center justify-between px-1 pb-0.5">
-        <span className="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
-          <span className={cn("h-1.5 w-1.5 rounded-full", accent)} aria-hidden="true" />
-          {title}
-        </span>
+        <span className="text-[13px] font-semibold text-foreground">{title}</span>
         <span className="font-mono text-[11px] tabular text-muted-foreground">{count}</span>
       </div>
       <div className="flex min-h-[19rem] flex-col gap-2 sm:min-h-[15.5rem]">{children}</div>
@@ -178,19 +172,15 @@ export function HeroBoard({ className }: { className?: string }) {
 
   return (
     <div
-      className={cn("glass relative overflow-hidden rounded-2xl p-3 sm:p-4", className)}
+      className={cn("panel relative overflow-hidden p-3 sm:p-4", className)}
       role="img"
       aria-label="Animated preview: chat messages become cards that move from Inbox to Approved to Posted."
     >
       <div aria-hidden="true">
         {/* Window chrome */}
-        <div className="mb-3 flex items-center justify-between">
-          <div className="flex items-center gap-1.5">
-            <span className="h-2.5 w-2.5 rounded-full bg-white/15" />
-            <span className="h-2.5 w-2.5 rounded-full bg-white/15" />
-            <span className="h-2.5 w-2.5 rounded-full bg-white/15" />
-          </div>
-          <span className="flex items-center gap-2 rounded-full border border-accent/30 bg-accent/10 px-2.5 py-1 text-[11px] font-medium text-accent">
+        <div className="mb-3 flex items-center justify-between border-b border-border px-1 pb-3">
+          <span className="font-mono text-xs text-subtle">#meetup-planning → Clerk</span>
+          <span className="flex items-center gap-2 text-xs text-muted-foreground">
             <span className="live-dot" />
             Live
           </span>
@@ -199,8 +189,8 @@ export function HeroBoard({ className }: { className?: string }) {
         <LayoutGroup>
           <div className="grid gap-3 md:grid-cols-[minmax(0,0.8fr)_minmax(0,2.2fr)]">
             {/* Chat strip */}
-            <div className="hidden flex-col gap-2 rounded-lg bg-black/20 p-2 md:flex">
-              <div className="truncate px-1 pb-0.5 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+            <div className="hidden flex-col gap-2 border-r border-border p-2 pr-4 md:flex">
+              <div className="truncate px-1 pb-0.5 font-mono text-[11px] uppercase tracking-[0.05em] text-subtle">
                 #meetup-planning
               </div>
               <div className="flex min-h-[15.5rem] flex-col gap-2 overflow-hidden">
@@ -220,7 +210,7 @@ export function HeroBoard({ className }: { className?: string }) {
                         <div className="flex items-center gap-1.5">
                           <span className="text-[11px] font-semibold text-foreground">{line.author}</span>
                           {line.noise && (
-                            <span className="rounded bg-noise/30 px-1 text-[9px] uppercase tracking-wide text-muted-foreground">
+                            <span className="font-mono text-[9px] uppercase tracking-wide text-subtle">
                               ignored
                             </span>
                           )}
@@ -235,13 +225,13 @@ export function HeroBoard({ className }: { className?: string }) {
 
             {/* Mini kanban */}
             <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
-              <Column title="Inbox" count={inbox.length} accent="bg-primary">
+              <Column title="Inbox" count={inbox.length}>
                 {renderColumn(inbox)}
               </Column>
-              <Column title="Approved" count={approved.length} accent="bg-success">
+              <Column title="Approved" count={approved.length}>
                 {renderColumn(approved)}
               </Column>
-              <Column title="Posted" count={posted.length} accent="bg-accent" className="hidden sm:flex">
+              <Column title="Posted" count={posted.length} className="hidden sm:flex">
                 {renderColumn(posted)}
               </Column>
             </div>

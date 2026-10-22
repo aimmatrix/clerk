@@ -4,14 +4,14 @@ import { canExportIcs, toIcs } from '@clerk/core';
 import { motion, useReducedMotion } from 'framer-motion';
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { useFlightLauncher } from './flight-layer';
-import { PRIORITY_CLASS, TYPE_META, avatarColour, dueLabel, initials, postBackText } from './format';
+import { PRIORITY_CLASS, TYPE_META, dueLabel, initials, postBackText } from './format';
 import type { SimItem } from './pipeline';
 import type { ReviewStep } from './use-simulator';
 
-/** Green ≥ 0.8, amber 0.6–0.8, red < 0.6 (matches the brief). */
+/** Neutral ink unless confidence is low. */
 function ringColour(confidence: number): string {
-  if (confidence >= 0.8) return 'rgb(var(--success))';
-  if (confidence >= 0.6) return 'rgb(var(--request))';
+  if (confidence >= 0.8) return 'rgb(var(--muted))';
+  if (confidence >= 0.6) return 'rgb(var(--warning))';
   return 'rgb(var(--urgent))';
 }
 
@@ -23,7 +23,7 @@ function Ring({ confidence }: { confidence: number }) {
       title={`Confidence ${(confidence * 100).toFixed(0)}%`}
     >
       <svg viewBox="0 0 28 28" className="absolute inset-0 -rotate-90" aria-hidden>
-        <circle cx="14" cy="14" r="11" fill="none" stroke="rgb(255 255 255 / 0.1)" strokeWidth="2.5" />
+        <circle cx="14" cy="14" r="11" fill="none" stroke="rgb(231 229 225)" strokeWidth="2.5" />
         <motion.circle
           cx="14"
           cy="14"
@@ -37,7 +37,7 @@ function Ring({ confidence }: { confidence: number }) {
           transition={{ duration: 0.8, ease: 'easeOut' }}
         />
       </svg>
-      <span className="font-mono text-[9px] text-foreground/80">{Math.round(confidence * 100)}</span>
+      <span className="font-mono text-[9px] text-muted-foreground">{Math.round(confidence * 100)}</span>
     </span>
   );
 }
@@ -47,7 +47,7 @@ interface SimCardProps {
   onReview: (id: string, step: ReviewStep) => void;
 }
 
-const BTN = 'inline-flex h-7 items-center rounded-md px-2.5 text-xs font-medium transition';
+const BTN = 'inline-flex h-8 items-center rounded-md px-3 text-[13px] font-medium transition-colors';
 
 export function SimCard({ item, onReview }: SimCardProps) {
   const reduce = useReducedMotion();
@@ -113,14 +113,14 @@ export function SimCard({ item, onReview }: SimCardProps) {
     >
       <div
         ref={inner}
-        className={`rounded-lg border bg-white/[0.04] p-3 transition-shadow duration-500 ${meta.border} ${
-          glow ? 'shadow-glow' : ''
+        className={`rounded-[10px] border bg-surface p-3.5 transition-shadow duration-500 ${
+          glow ? 'border-success/60' : meta.border
         }`}
       >
         <div className="flex items-start justify-between gap-2">
-          <div className="flex flex-wrap items-center gap-1.5">
-            <span className={`rounded-full px-2 py-0.5 text-[11px] font-medium ${meta.chip}`}>{meta.label}</span>
-            <span className={`rounded-full px-2 py-0.5 font-mono text-[11px] ${PRIORITY_CLASS[item.priority]}`}>
+          <div className="flex flex-wrap items-center gap-2">
+            <span className={`font-mono text-[11px] uppercase tracking-[0.05em] ${meta.chip}`}>{meta.label}</span>
+            <span className={`font-mono text-[11px] ${PRIORITY_CLASS[item.priority]}`}>
               {item.priority}
             </span>
           </div>
@@ -134,34 +134,33 @@ export function SimCard({ item, onReview }: SimCardProps) {
             <span className="flex min-w-0 items-center gap-1.5">
               <span
                 aria-hidden
-                className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-[9px] font-semibold text-white"
-                style={{ backgroundColor: avatarColour(item.ownerName) }}
+                className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-sunken text-[9px] font-semibold text-muted-foreground"
               >
                 {initials(item.ownerName)}
               </span>
               <span className="truncate">{item.ownerName}</span>
             </span>
           ) : (
-            <span className="rounded-full border border-dashed border-white/20 px-2 py-0.5 text-[11px]">Unowned</span>
+            <span className="rounded-full border border-dashed border-input px-2 py-0.5 text-[11px]">Unowned</span>
           )}
           {due && (
             <span className={`ml-auto shrink-0 font-mono ${due === 'overdue' ? 'text-urgent' : ''}`}>{due}</span>
           )}
         </div>
 
-        <p className="mt-2 line-clamp-1 border-l-2 border-white/10 pl-2 text-[11px] italic text-muted-foreground">
+        <p className="mt-2 line-clamp-1 border-l-2 border-border pl-2 text-[11px] text-subtle">
           {item.sourceAuthor}: {item.sourceText}
         </p>
 
         {item.status === 'posted' && (
-          <p className="mt-2 rounded-md bg-decision/10 px-2 py-1.5 text-xs text-decision">
+          <p className="mt-2 rounded-md bg-background px-2 py-1.5 text-xs text-muted-foreground">
             {postBackText(item, simNow)}
           </p>
         )}
 
         <div className="mt-2.5 flex flex-wrap items-center gap-1.5">
           {canExportIcs(item) && (
-            <button type="button" className={`${BTN} bg-accent/10 text-accent hover:bg-accent/20`} onClick={() => {
+            <button type="button" className={`${BTN} border border-input bg-surface text-foreground hover:bg-sunken`} onClick={() => {
               const url = URL.createObjectURL(new Blob([toIcs(item)], { type: 'text/calendar;charset=utf-8' }));
               const link = document.createElement('a'); link.href = url; link.download = 'clerk-event.ics'; link.click();
               setTimeout(() => URL.revokeObjectURL(url), 1000);
@@ -172,7 +171,7 @@ export function SimCard({ item, onReview }: SimCardProps) {
               <button
                 type="button"
                 onClick={() => onReview(item.id, 'approve')}
-                className={`${BTN} bg-success/15 text-success hover:bg-success/25`}
+                className={`${BTN} bg-primary text-white hover:bg-primary-600`}
                 aria-label={`Approve: ${item.title}`}
               >
                 Approve
@@ -180,7 +179,7 @@ export function SimCard({ item, onReview }: SimCardProps) {
               <button
                 type="button"
                 onClick={() => onReview(item.id, 'reject')}
-                className={`${BTN} text-muted-foreground hover:bg-white/5 hover:text-foreground`}
+                className={`${BTN} text-muted-foreground hover:bg-sunken hover:text-foreground`}
                 aria-label={`Reject: ${item.title}`}
               >
                 Reject
@@ -191,7 +190,7 @@ export function SimCard({ item, onReview }: SimCardProps) {
             <button
               type="button"
               onClick={() => onReview(item.id, 'post')}
-              className={`${BTN} bg-primary/20 text-primary-300 hover:bg-primary/30`}
+              className={`${BTN} bg-primary text-white hover:bg-primary-600`}
               aria-label={`Post (simulated): ${item.title}`}
             >
               Post (simulated)
@@ -201,13 +200,13 @@ export function SimCard({ item, onReview }: SimCardProps) {
             <button
               type="button"
               onClick={() => onReview(item.id, 'done')}
-              className={`${BTN} bg-white/10 text-foreground hover:bg-white/20`}
+              className={`${BTN} border border-input bg-surface text-foreground hover:bg-sunken`}
               aria-label={`Mark done: ${item.title}`}
             >
               Mark done
             </button>
           )}
-          {item.status === 'done' && <span className="text-xs text-success">✓ Done</span>}
+          {item.status === 'done' && <span className="text-xs text-success">Done</span>}
         </div>
       </div>
     </motion.article>

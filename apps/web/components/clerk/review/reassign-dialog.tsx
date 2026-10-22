@@ -40,9 +40,9 @@ export function ReassignDialog({ item, owners, onSave, onClose }: ReassignDialog
           <h2 id={titleId} className="text-lg font-semibold" style={headingFont}>
             Reassign
           </h2>
-          <p className="mt-1 line-clamp-2 text-sm text-[#8A90A6]">{item.title}</p>
+          <p className="mt-1 line-clamp-2 text-sm text-muted-foreground">{item.title}</p>
 
-          <label className="mt-5 block text-xs font-medium text-[#8A90A6]" htmlFor={`${titleId}-owner`}>
+          <label className="mt-5 block text-xs font-medium text-muted-foreground" htmlFor={`${titleId}-owner`}>
             Owner
           </label>
           <input
@@ -53,7 +53,7 @@ export function ReassignDialog({ item, owners, onSave, onClose }: ReassignDialog
             onChange={(e) => setValue(e.target.value)}
             placeholder="Type a name, or leave empty for no owner"
             autoComplete="off"
-            className="mt-1 w-full rounded-lg border border-white/10 bg-black/20 px-3 py-2 text-sm text-[#E8EAF2] outline-none placeholder:text-[#8A90A6] focus:border-[#7C5CFF]"
+            className="mt-1 w-full rounded-lg border border-input bg-surface px-3 py-2 text-sm text-foreground outline-none placeholder:text-muted-foreground focus:border-primary"
           />
           <datalist id={listId}>
             {owners.map((o) => (
@@ -68,7 +68,7 @@ export function ReassignDialog({ item, owners, onSave, onClose }: ReassignDialog
                   key={o}
                   type="button"
                   onClick={() => setValue(o)}
-                  className="inline-flex items-center gap-1.5 rounded-full border border-white/10 py-1 pl-1 pr-3 text-xs hover:bg-white/5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#7C5CFF]"
+                  className="inline-flex items-center gap-1.5 rounded-full border border-border py-1 pl-1 pr-3 text-xs hover:bg-sunken focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary"
                 >
                   <Avatar name={o} size={20} />
                   {o}
@@ -81,14 +81,14 @@ export function ReassignDialog({ item, owners, onSave, onClose }: ReassignDialog
             <button
               type="button"
               onClick={onClose}
-              className="rounded-lg border border-white/10 px-3 py-2 text-sm hover:bg-white/5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#7C5CFF]"
+              className="rounded-lg border border-input bg-surface px-3 py-2 text-sm hover:bg-sunken focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={unchanged}
-              className="rounded-lg bg-[#7C5CFF] px-4 py-2 text-sm font-semibold text-white hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#A593FF]"
+              className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-white hover:bg-primary-600 disabled:cursor-not-allowed disabled:opacity-40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
             >
               {trimmed === "" ? "Clear owner" : "Reassign"}
             </button>

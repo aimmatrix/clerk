@@ -7,8 +7,8 @@ import type { Variants } from 'framer-motion';
 import type { Item, ItemStatus } from '@clerk/core';
 import { ApproveBurst } from './approve-burst';
 import { ConfidenceRing } from './confidence-ring';
-import { avatarHue, cx, formatDue, initials } from './format';
-import { CARD_SPRING, PRIORITY_COLOURS, TYPE_COLOURS, TYPE_LABELS, URGENT_COLOUR } from './tokens';
+import { cx, formatDue, initials } from './format';
+import { CARD_SPRING, PRIORITY_COLOURS, TYPE_LABELS, URGENT_COLOUR } from './tokens';
 
 export type ItemCardVariant = 'pending' | 'approved' | 'posted' | 'rejected';
 
@@ -31,29 +31,27 @@ function variantFromStatus(status: ItemStatus): ItemCardVariant {
   }
 }
 
-const SHADOW_REST = '0 0 0 0 rgba(52,211,153,0), 0 8px 24px -12px rgba(0,0,0,0.6)';
-const SHADOW_GLOW = '0 0 0 1px rgba(52,211,153,0.55), 0 0 32px 2px rgba(52,211,153,0.35)';
+const SHADOW_REST = '0 0 0 0 rgba(21,128,61,0)';
+const SHADOW_GLOW = '0 0 0 1px rgba(21,128,61,0.5)';
 
 function buildVariants(reduced: boolean): Variants {
   if (reduced) {
     return {
       pending: { opacity: 1, boxShadow: SHADOW_REST, transition: { duration: 0.15 } },
       approved: { opacity: 1, boxShadow: SHADOW_GLOW, transition: { duration: 0.15 } },
-      posted: { opacity: 0.75, boxShadow: SHADOW_REST, transition: { duration: 0.15 } },
+      posted: { opacity: 0.8, boxShadow: SHADOW_REST, transition: { duration: 0.15 } },
       rejected: { opacity: 0.4, boxShadow: SHADOW_REST, transition: { duration: 0.15 } },
     };
   }
   return {
     pending: { opacity: 1, scale: 1, y: 0, boxShadow: SHADOW_REST, transition: CARD_SPRING },
-    // Scale pulse is a three-keyframe tween (springs only support two keyframes).
     approved: {
       opacity: 1,
       y: 0,
-      scale: [1, 1.04, 1],
       boxShadow: SHADOW_GLOW,
-      transition: { scale: { duration: 0.5, times: [0, 0.4, 1] }, boxShadow: { duration: 0.4 }, default: CARD_SPRING },
+      transition: { boxShadow: { duration: 0.3 }, default: CARD_SPRING },
     },
-    posted: { opacity: 0.75, scale: 1, y: 0, boxShadow: SHADOW_REST, transition: CARD_SPRING },
+    posted: { opacity: 0.8, scale: 1, y: 0, boxShadow: SHADOW_REST, transition: CARD_SPRING },
     rejected: { opacity: 0.4, scale: 0.98, y: 8, boxShadow: SHADOW_REST, transition: { duration: 0.3 } },
   };
 }
@@ -81,24 +79,18 @@ function Avatar({ name, size }: { name: string | null; size: number }) {
     return (
       <span
         aria-hidden
-        className="flex items-center justify-center rounded-full border border-dashed border-white/25 font-mono text-[#8A90A6]"
+        className="flex items-center justify-center rounded-full border border-dashed border-input font-mono text-subtle"
         style={{ width: size, height: size, fontSize: size * 0.4 }}
       >
         ?
       </span>
     );
   }
-  const hue = avatarHue(name);
   return (
     <span
       aria-hidden
-      className="flex items-center justify-center rounded-full font-semibold text-white"
-      style={{
-        width: size,
-        height: size,
-        fontSize: size * 0.38,
-        background: `linear-gradient(135deg, hsl(${hue} 70% 48%), hsl(${(hue + 40) % 360} 70% 38%))`,
-      }}
+      className="flex items-center justify-center rounded-full bg-sunken font-semibold text-muted-foreground"
+      style={{ width: size, height: size, fontSize: size * 0.38 }}
     >
       {initials(name)}
     </span>
@@ -114,24 +106,18 @@ function ExternalIcon() {
 }
 
 function TypeChip({ type }: { type: Item['type'] }) {
-  const colour = TYPE_COLOURS[type];
   return (
-    <span
-      className="inline-flex items-center gap-1.5 rounded-full px-2 py-0.5 text-[11px] font-medium leading-4"
-      style={{ color: colour, background: `${colour}1F`, boxShadow: `inset 0 0 0 1px ${colour}40` }}
-    >
-      <span aria-hidden className="h-1.5 w-1.5 rounded-full" style={{ background: colour }} />
+    <span className="font-mono text-[11px] uppercase leading-4 tracking-[0.05em] text-muted-foreground">
       {TYPE_LABELS[type]}
     </span>
   );
 }
 
 function PriorityPill({ priority }: { priority: Item['priority'] }) {
-  const colour = PRIORITY_COLOURS[priority];
   return (
     <span
-      className="rounded-md px-1.5 py-0.5 font-mono text-[10px] font-semibold leading-4"
-      style={{ color: colour, background: `${colour}1F` }}
+      className={cx('font-mono text-[11px] leading-4', priority === 'P0' ? 'font-semibold' : 'font-medium')}
+      style={{ color: PRIORITY_COLOURS[priority] }}
       title={`Priority ${priority}`}
     >
       {priority}
@@ -140,9 +126,9 @@ function PriorityPill({ priority }: { priority: Item['priority'] }) {
 }
 
 const STATE_BADGE: Partial<Record<ItemCardVariant, { text: string; colour: string }>> = {
-  approved: { text: 'Approved', colour: '#34D399' },
-  posted: { text: 'Posted', colour: '#34D399' },
-  rejected: { text: 'Rejected', colour: '#8A90A6' },
+  approved: { text: 'Approved', colour: '#15803D' },
+  posted: { text: 'Posted', colour: '#15803D' },
+  rejected: { text: 'Rejected', colour: '#71717A' },
 };
 
 export function ItemCard({
@@ -171,8 +157,7 @@ export function ItemCard({
   }, [resolvedVariant, burstOnApprove]);
 
   const due = formatDue(item.dueAt, now);
-  const typeColour = TYPE_COLOURS[item.type];
-  const urgent = item.priority === 'P0' && resolvedVariant === 'pending';
+    const urgent = item.priority === 'P0' && resolvedVariant === 'pending';
   const badge = STATE_BADGE[resolvedVariant];
   const interactive = Boolean(onSelect);
 
@@ -186,15 +171,15 @@ export function ItemCard({
   };
   const stopPropagation = (event: MouseEvent) => event.stopPropagation();
 
-  const avatarSize = compact ? 20 : 34;
-  const ringSize = compact ? 28 : 44;
+  const avatarSize = compact ? 20 : 26;
+  const ringSize = compact ? 28 : 34;
 
   return (
     <motion.article
       layout={!reduced}
       layoutId={reduced ? undefined : sharedId}
       variants={buildVariants(reduced)}
-      initial={reduced ? { opacity: 0 } : { opacity: 0, y: 6, scale: 0.97 }}
+      initial={reduced ? { opacity: 0 } : { opacity: 0, y: 6 }}
       animate={resolvedVariant}
       exit={reduced ? { opacity: 0 } : { opacity: 0, y: 8, transition: { duration: 0.2 } }}
       aria-labelledby={titleId}
@@ -206,29 +191,21 @@ export function ItemCard({
       onClick={interactive ? handleClick : undefined}
       onKeyDown={interactive ? handleKey : undefined}
       className={cx(
-        'group relative rounded-2xl border bg-[#141826]/60 text-[#E8EAF2] backdrop-blur-xl',
-        'outline-none focus-visible:ring-2 focus-visible:ring-[#7C5CFF]',
-        compact ? 'px-3 py-2' : 'p-3.5',
-        selected ? 'border-[#7C5CFF]/70' : urgent ? 'border-[#F43F5E]/40' : 'border-white/[0.08]',
+        'group relative rounded-[10px] border bg-surface text-foreground',
+        'outline-none focus-visible:ring-2 focus-visible:ring-primary',
+        compact ? 'px-3 py-2' : 'px-4 py-3.5',
+        selected ? 'border-foreground' : 'border-border',
         interactive && 'cursor-pointer',
         className,
       )}
     >
-      {/* Type accent bar */}
-      <span
-        aria-hidden
-        className="absolute bottom-3 left-0 top-3 w-[3px] rounded-r-full"
-        style={{ background: urgent ? URGENT_COLOUR : typeColour }}
-      />
-
       {bursting && <ApproveBurst onComplete={() => setBursting(false)} />}
 
       {compact ? (
-        <div className="flex items-center gap-2.5 pl-1">
+        <div className="flex items-center gap-2.5">
           <ConfidenceRing confidence={item.confidence} size={ringSize} stroke={2.5}>
             <Avatar name={item.ownerName} size={avatarSize} />
           </ConfidenceRing>
-          <span aria-hidden className="h-2 w-2 shrink-0 rounded-full" style={{ background: typeColour }} title={TYPE_LABELS[item.type]} />
           <span className="sr-only">{TYPE_LABELS[item.type]}:</span>
           <h3 id={titleId} className={cx('min-w-0 flex-1 truncate text-[13px] font-medium', resolvedVariant === 'rejected' && 'line-through')}>
             {item.title}
@@ -236,7 +213,7 @@ export function ItemCard({
           {due && (
             <span
               className="shrink-0 text-[11px] tabular-nums"
-              style={{ color: due.overdue ? URGENT_COLOUR : '#8A90A6' }}
+              style={{ color: due.overdue ? URGENT_COLOUR : '#71717A' }}
               suppressHydrationWarning
             >
               {due.text}
@@ -245,18 +222,18 @@ export function ItemCard({
           <PriorityPill priority={item.priority} />
         </div>
       ) : (
-        <div className="flex gap-3 pl-1.5">
+        <div className="flex gap-3">
           <div className="flex flex-col items-center gap-1">
             <ConfidenceRing confidence={item.confidence} size={ringSize} stroke={3}>
               <Avatar name={item.ownerName} size={avatarSize} />
             </ConfidenceRing>
-            <span className="font-mono text-[10px] tabular-nums text-[#8A90A6]" title="Extraction confidence">
+            <span className="font-mono text-[10px] tabular-nums text-subtle" title="Extraction confidence">
               {Math.round(item.confidence * 100)}%
             </span>
           </div>
 
           <div className="min-w-0 flex-1">
-            <div className="mb-1.5 flex flex-wrap items-center gap-1.5">
+            <div className="mb-1.5 flex flex-wrap items-center gap-2">
               <TypeChip type={item.type} />
               <PriorityPill priority={item.priority} />
               {badge && (
@@ -273,27 +250,26 @@ export function ItemCard({
 
             <h3
               id={titleId}
-              className={cx('font-display text-[15px] font-semibold leading-5', resolvedVariant === 'rejected' && 'line-through decoration-white/30')}
+              className={cx('text-[14px] font-medium leading-5', resolvedVariant === 'rejected' && 'line-through decoration-subtle')}
             >
               {item.title}
             </h3>
 
-            {item.summary && <p className="mt-1 line-clamp-2 text-[13px] leading-[18px] text-[#8A90A6]">{item.summary}</p>}
+            {item.summary && <p className="mt-1 line-clamp-2 text-[13px] leading-[18px] text-muted-foreground">{item.summary}</p>}
 
             {item.type === 'question' && item.suggestedReply && (
-              <p className="mt-2 line-clamp-2 rounded-lg bg-[#60A5FA]/10 px-2.5 py-1.5 text-[12px] leading-[17px] text-[#B7D3FB]">
-                <span aria-hidden>💬 </span>
-                <span className="sr-only">Suggested reply: </span>
+              <p className="mt-2 line-clamp-2 rounded-lg bg-background px-2.5 py-1.5 text-[12px] leading-[17px] text-muted-foreground">
+                <span className="text-subtle">Draft reply: </span>
                 {item.suggestedReply}
               </p>
             )}
 
-            <div className="mt-2.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-[12px] text-[#8A90A6]">
+            <div className="mt-2.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-[12px] text-subtle">
               <span className={cx('truncate', !item.ownerName && 'italic')}>{item.ownerName ?? 'Unassigned'}</span>
               {due && (
                 <span
                   className="tabular-nums"
-                  style={{ color: due.overdue ? URGENT_COLOUR : due.soon ? '#F59E0B' : undefined }}
+                  style={{ color: due.overdue ? URGENT_COLOUR : undefined }}
                   suppressHydrationWarning
                 >
                   {due.text}
@@ -305,7 +281,7 @@ export function ItemCard({
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={stopPropagation}
-                  className="ml-auto inline-flex items-center gap-1 rounded text-[#22D3EE] hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#22D3EE]"
+                  className="ml-auto inline-flex items-center gap-1 rounded text-primary hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
                   aria-label={`Open source message for ${item.title}`}
                 >
                   Source <ExternalIcon />

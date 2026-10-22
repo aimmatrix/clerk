@@ -69,7 +69,7 @@ export function FlightProvider({ children }: { children: ReactNode }) {
             {flights.map((flight) => (
               <motion.div
                 key={flight.id}
-                className="absolute overflow-hidden rounded-lg border bg-[rgb(var(--surface-solid))] px-3 py-2 text-sm font-medium shadow-glass"
+                className="absolute overflow-hidden rounded-lg border bg-[rgb(var(--surface-solid))] px-3 py-2 text-sm font-medium shadow-pop"
                 style={{ borderColor: flight.colour }}
                 initial={{ ...flight.from, opacity: 0.95 }}
                 animate={{ ...flight.to, opacity: 1 }}

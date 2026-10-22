@@ -1,13 +1,14 @@
 import type { ItemType, Priority } from '@clerk/core';
 
-/** Design tokens from the shared brief, kept local so the card has no dependency on C1's CSS vars. */
+/** Light-theme colours, kept local so the card has no dependency on CSS vars. */
+/** Types are told apart by label, not colour: one neutral ink for all. */
 export const TYPE_COLOURS: Record<ItemType, string> = {
-  request: '#F59E0B',
-  task: '#7C5CFF',
-  event: '#22D3EE',
-  question: '#60A5FA',
-  decision: '#34D399',
-  noise: '#4B5163',
+  request: '#52525B',
+  task: '#52525B',
+  event: '#52525B',
+  question: '#52525B',
+  decision: '#52525B',
+  noise: '#A1A1AA',
 };
 
 export const TYPE_LABELS: Record<ItemType, string> = {
@@ -19,20 +20,21 @@ export const TYPE_LABELS: Record<ItemType, string> = {
   noise: 'Noise',
 };
 
+/** Only P0 gets colour; lower priorities step down in weight. */
 export const PRIORITY_COLOURS: Record<Priority, string> = {
-  P0: '#F43F5E',
-  P1: '#F59E0B',
-  P2: '#8A90A6',
-  P3: '#4B5163',
+  P0: '#C2410C',
+  P1: '#18181B',
+  P2: '#52525B',
+  P3: '#71717A',
 };
 
-export const SUCCESS_COLOUR = '#34D399';
-export const URGENT_COLOUR = '#F43F5E';
-export const WARNING_COLOUR = '#F59E0B';
+export const SUCCESS_COLOUR = '#15803D';
+export const URGENT_COLOUR = '#C2410C';
+export const WARNING_COLOUR = '#B45309';
 
-/** Green ≥ 0.8, amber 0.6–0.8, red < 0.6 (those items normally route to the failure log). */
+/** Neutral grey unless confidence is low (those items normally route to the failure log). */
 export function confidenceColour(confidence: number): string {
-  if (confidence >= 0.8) return SUCCESS_COLOUR;
+  if (confidence >= 0.8) return '#52525B';
   if (confidence >= 0.6) return WARNING_COLOUR;
   return URGENT_COLOUR;
 }

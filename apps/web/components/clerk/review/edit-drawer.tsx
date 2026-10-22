@@ -51,8 +51,8 @@ export function diffDraft(item: Item, draft: Draft): Patch {
 }
 
 const fieldClass =
-  "mt-1 w-full rounded-lg border border-white/10 bg-black/20 px-3 py-2 text-sm text-[#E8EAF2] outline-none placeholder:text-[#8A90A6] focus:border-[#7C5CFF]";
-const labelClass = "block text-xs font-medium text-[#8A90A6]";
+  "mt-1 w-full rounded-lg border border-input bg-surface px-3 py-2 text-sm text-foreground outline-none placeholder:text-muted-foreground focus:border-primary";
+const labelClass = "block text-xs font-medium text-muted-foreground";
 
 export function EditDrawer({ item, owners, onSave, onClose }: EditDrawerProps) {
   const id = useId();
@@ -89,7 +89,7 @@ export function EditDrawer({ item, owners, onSave, onClose }: EditDrawerProps) {
           <div className="mt-5 flex flex-1 flex-col gap-4">
             <div>
               <label className={labelClass} htmlFor={`${id}-t`}>
-                Title <span className="text-[#8A90A6]">({draft.title.length}/80)</span>
+                Title <span className="text-muted-foreground">({draft.title.length}/80)</span>
               </label>
               <input
                 id={`${id}-t`}
@@ -160,14 +160,14 @@ export function EditDrawer({ item, owners, onSave, onClose }: EditDrawerProps) {
 
             <div>
               <label className={labelClass} htmlFor={`${id}-d`}>
-                Due <span className="text-[#8A90A6]">(London time)</span>
+                Due <span className="text-muted-foreground">(London time)</span>
               </label>
               <input
                 id={`${id}-d`}
                 type="datetime-local"
                 value={draft.due}
                 onChange={(e) => set("due", e.target.value)}
-                className={`${fieldClass} [color-scheme:dark]`}
+                className={`${fieldClass} [color-scheme:light]`}
               />
             </div>
 
@@ -191,14 +191,14 @@ export function EditDrawer({ item, owners, onSave, onClose }: EditDrawerProps) {
             <button
               type="button"
               onClick={onClose}
-              className="rounded-lg border border-white/10 px-3 py-2 text-sm hover:bg-white/5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#7C5CFF]"
+              className="rounded-lg border border-input bg-surface px-3 py-2 text-sm hover:bg-sunken focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={!dirty || !titleValid}
-              className="rounded-lg bg-[#7C5CFF] px-4 py-2 text-sm font-semibold text-white hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#A593FF]"
+              className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-white hover:bg-primary-600 disabled:cursor-not-allowed disabled:opacity-40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
             >
               Save changes
             </button>
