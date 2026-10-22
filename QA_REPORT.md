@@ -85,7 +85,7 @@ Paths below are relative to the repository root. No unexecuted check is labelled
 | Latest live-community navigation preserves correct community | PASS | qa-screenshots/live-community-navigation.png, simulator-navigation-context.png |
 | Five tables, RLS, enums, publication and trigger in actual database | PASS | qa-screenshots/evidence-database.png; database-contract.json, schema-after.json |
 | Fresh local Supabase db reset | FAIL — blocked | qa-screenshots/evidence-blocked.png; actual Docker daemon error captured. Hosted migrations succeeded. |
-| CI smoke portability regression | PASS locally | qa-screenshots/evidence-ci.png; smoke-ci-final.log and ci-alias-typecheck.log; published GitHub checks available under repository Actions |
+| CI smoke portability regression | PASS, including GitHub | qa-screenshots/evidence-ci.png; final published application passed CI: https://github.com/aimmatrix/clerk/actions/runs/39851483084 |
 | Final workspace install/typecheck/lint/build/core tests | PASS | qa-screenshots/evidence-builds.png; detailed logs listed below |
 | All documented REST response shapes | PASS | qa-screenshots/evidence-contracts.png and individual api-*.png |
 | Public repo, licence, README, env and history scan | PASS | qa-screenshots/submission-public-repository.png and evidence-submission.png; anonymous GitHub HTTP 200, public main verified; no configured credentials found in reachable history |
@@ -116,7 +116,7 @@ Final successful logs: build-final-nav.log, build-final-offline-nav.log, build-l
 
 Errors encountered earlier, with their actual locations rather than invented source lines:
 
-- .github/workflows/ci.yml:20 — Node 20 lacked the native WebSocket required by locked Supabase 2.118.0 (dependency engines: Node >=22). CI/runtime prerequisite aligned to the locally verified Node 22; this supersedes the original build-pack Node 20 prerequisite.
+- .github/workflows/ci.yml:17 — Node 20 lacked the native WebSocket required by locked Supabase 2.118.0 (dependency engines: Node >=22). CI/runtime prerequisite aligned to the locally verified Node 22; this supersedes the original build-pack Node 20 prerequisite.
 - apps/web/app/api/_lib/store.ts:15 — GitHub smoke could not resolve the Next-only @/lib/db alias. Fixed with a relative import; pnpm smoke and web typecheck pass. GitHub check history is linked from the public repository Actions page.
 - packages/core/src/index.ts:25 — TS2307 / unresolved ./ranker; affected all three packages. Restored the existing C10 implementation.
 - apps/web/app/layout.ts — build-time Google font requests failed DNS for Inter, Space Grotesk and JetBrains Mono. Replaced remote font loading with bundled fonts; final Geist redesign is bundled too. This was a network build error, not a TypeScript source error with a reported line.
@@ -177,6 +177,7 @@ Database work applied the existing two migrations and seed to the configured pro
 | Low | docs/pitch.md:11 | Spoken narration was not timed; the required full simulator playback passed in both modes. Real Discord actions were tested separately. | Rehearse the spoken pitch once at 2x before presenting. |
 | Medium | apps/web/lib/realtime.ts:125; supabase owner RLS | Private anonymous browser subscribes but receives no private postgres changes. REST reconciliation now works; demo websocket delivery is genuine. | Use demo community for stage; owner authentication is needed for true private websocket delivery. Keep existing RLS. |
 | Medium | apps/web/app/api/ingest/route.ts:59; app/api/_lib/store.ts; app/api/simulator/reset/route.ts:16 | Reset concurrent with ingestion can delete an item between item insertion and item_events insertion, producing a foreign-key error. Observed during deliberately overlapping QA operations. | Reset only while idle for the demo; serialize or transactionally group persistence/reset before a multi-user pilot. |
+| Medium | apps/bot/src/api.ts:81 | If the web API is unavailable, bot ingestion uses an in-memory mock and does not replay that message to the real board. Observed during a QA server restart; bot client now reports live health. | Keep the server running for the demo and resend any message entered during an outage. Durable retry belongs after freeze. |
 | Medium | supabase/config.toml | A fresh local db reset was not run because Docker is stopped. Hosted migration application and resulting schema were verified. | Start Docker and run supabase db reset when there is time; preserve the working hosted database for the demo. |
 | Medium | vercel.json / X5 deployment | No deployed web URL was tested or created; user requested localhost. Bot is verified locally. | Use the laptop for the demo and submit the public repo plus recording. Deploy separately if a public interactive URL is required. |
 | Low | components/clerk/brand/site-nav.tsx:37; review-workspace.tsx:119; failures-log.tsx:172 | At 390 px the nav and failure table scroll horizontally; Review's focus/actions sit below a long queue. No document overflow remains, but these controls require scrolling. | Use 1280×800 for presentation; add mobile scroll hints or focus-first ordering after freeze. |
@@ -189,3 +190,5 @@ Database work applied the existing two migrations and seed to the configured pro
 3. Freeze the verified main commit, submit the public repository and recording, and avoid further design changes or demo resets while extraction is in flight.
 
 Final release verification: 12/12 desktop/mobile screens returned HTTP 200, no document overflow, no uncaught app errors or failed HTTP responses; maximum page-response time 472 ms. Background RSC prefetch cancellation events remain recorded separately. The last full offline playback took 73.739 seconds.
+
+GitHub CI passed on df740e1, including install, 205 core tests, all three typechecks, approval gate and default smoke. The final report-only edit does not change the verified application or runtime configuration.
