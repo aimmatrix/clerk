@@ -1,4 +1,5 @@
 import { Suspense } from "react";
+import { unstable_cache } from "next/cache";
 import type { Metadata, Viewport } from "next";
 import "@fontsource-variable/geist";
 import "@fontsource-variable/geist-mono";
@@ -28,15 +29,26 @@ export const viewport: Viewport = {
   colorScheme: "light",
 };
 
+// Navigation metadata should never hold the whole page behind a slow database.
+const loadNavCommunity = unstable_cache(async (id: string) => {
+  const db = getSupabaseService();
+  if (!db) return null;
+  const { data, error } = await db.from("communities")
+    .select("id, name, discord_guild_id, post_channel_id").eq("id", id).maybeSingle();
+  if (error) throw error;
+  return data;
+}, ["clerk-nav-community"], { revalidate: 60 });
+
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const communityId = process.env.COMMUNITY_ID;
   let liveCommunity: { id: string; name: string; discordUrl?: string } | undefined;
   if (communityId) {
-    const db = getSupabaseService();
-    const result = db ? await db.from("communities")
-      .select("id, name, discord_guild_id, post_channel_id").eq("id", communityId).maybeSingle() : null;
-    if (result?.data) {
-      const community = result.data;
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    const community = await Promise.race([
+      loadNavCommunity(communityId),
+      new Promise<null>((resolve) => { timer = setTimeout(() => resolve(null), 1500); }),
+    ]).catch(() => null).finally(() => clearTimeout(timer));
+    if (community) {
       const guild = community.discord_guild_id;
       const channel = community.post_channel_id;
       liveCommunity = {
