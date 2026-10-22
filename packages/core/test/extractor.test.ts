@@ -468,7 +468,13 @@ describe('date handling', () => {
     expect(normaliseWhen('2026-11-05')).toBe('2026-11-05T18:00:00.000Z'); // 18:00 GMT
   });
 
-  it('keeps explicit offsets and rejects junk', () => {
+  it('corrects stale London DST offsets while preserving explicit UTC instants', () => {
+    expect(normaliseWhen('2026-10-28T18:30:00+01:00')).toBe('2026-10-28T18:30:00.000Z');
+    expect(normaliseWhen('2026-10-28T21:00:00+01:00')).toBe('2026-10-28T21:00:00.000Z');
+    expect(normaliseWhen('2026-10-15T18:00:00+00:00')).toBe('2026-10-15T17:00:00.000Z');
+  });
+
+  it('keeps valid London offsets and UTC instants and rejects junk', () => {
     expect(normaliseWhen('2026-10-15T18:00:00+01:00')).toBe('2026-10-15T17:00:00.000Z');
     expect(normaliseWhen('2026-10-15T18:00:00Z')).toBe('2026-10-15T18:00:00.000Z');
     expect(normaliseWhen('Thursday')).toBeNull();

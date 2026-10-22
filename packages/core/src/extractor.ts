@@ -308,7 +308,7 @@ function parseResponse(content: string): ParseOutcome {
 /* Post-processing                                                             */
 /* -------------------------------------------------------------------------- */
 
-/** Parse any date the model gave us into a UTC ISO string; offset-less values are Europe/London local. */
+/** Model numeric London offsets are wall times; recompute DST for the target date. Explicit Z remains UTC. */
 export function normaliseWhen(value: string | null | undefined): string | null {
   if (!value) return null;
   const text = value.trim();
@@ -316,7 +316,7 @@ export function normaliseWhen(value: string | null | undefined): string | null {
 
   let date: Date | null = null;
   const dateOnly = text.match(/^(\d{4})-(\d{2})-(\d{2})$/);
-  const local = text.match(/^(\d{4})-(\d{2})-(\d{2})[T ](\d{2}):(\d{2})(?::(\d{2}))?(?:\.\d+)?$/);
+  const local = text.match(/^(\d{4})-(\d{2})-(\d{2})[T ](\d{2}):(\d{2})(?::(\d{2}))?(?:\.\d+)?(?:\+0[01]:00)?$/);
   if (dateOnly) {
     date = londonLocalToUtc(Number(dateOnly[1]), Number(dateOnly[2]), Number(dateOnly[3]), 18, 0);
   } else if (local) {

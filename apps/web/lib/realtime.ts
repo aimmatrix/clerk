@@ -123,7 +123,8 @@ class Feed<T> {
     this.connect();
     void this.load();
     this.pollTimer = setInterval(() => {
-      if (this.state.status === 'live' || (typeof document !== 'undefined' && document.hidden)) return;
+      // A joined channel can still hide rows through RLS; reconcile with REST.
+      if (typeof document !== 'undefined' && document.hidden) return;
       void this.load();
     }, POLL_MS);
     if (typeof window !== 'undefined') {
