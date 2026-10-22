@@ -6,7 +6,7 @@
 
 Evidence is local in qa-results/ and qa-screenshots/ under the repository root. Screenshots of command output are labelled **captured command/API evidence**, not presented as application screens. Private Discord screenshots and raw QA data are deliberately excluded from the public repository. Public-safe demo screenshots and a real simulator recording are in docs/img/.
 
-Final application fix commit: **895d74d**. Public main includes the redesigned UI and the fixes below.
+Final application fix commit: **56dd3b6**. Public main includes the redesigned UI and the fixes below.
 
 ## Task inventory
 
@@ -85,6 +85,7 @@ Paths below are relative to the repository root. No unexecuted check is labelled
 | Latest live-community navigation preserves correct community | PASS | qa-screenshots/live-community-navigation.png, simulator-navigation-context.png |
 | Five tables, RLS, enums, publication and trigger in actual database | PASS | qa-screenshots/evidence-database.png; database-contract.json, schema-after.json |
 | Fresh local Supabase db reset | FAIL — blocked | qa-screenshots/evidence-blocked.png; actual Docker daemon error captured. Hosted migrations succeeded. |
+| CI smoke portability regression | PASS locally | qa-screenshots/evidence-ci.png; smoke-ci-final.log and ci-alias-typecheck.log; published GitHub checks available under repository Actions |
 | Final workspace install/typecheck/lint/build/core tests | PASS | qa-screenshots/evidence-builds.png; detailed logs listed below |
 | All documented REST response shapes | PASS | qa-screenshots/evidence-contracts.png and individual api-*.png |
 | Public repo, licence, README, env and history scan | PASS | qa-screenshots/submission-public-repository.png and evidence-submission.png; anonymous GitHub HTTP 200, public main verified; no configured credentials found in reachable history |
@@ -115,6 +116,7 @@ Final successful logs: build-final-nav.log, build-final-offline-nav.log, build-l
 
 Errors encountered earlier, with their actual locations rather than invented source lines:
 
+- apps/web/app/api/_lib/store.ts:15 — GitHub smoke could not resolve the Next-only @/lib/db alias. Fixed with a relative import; pnpm smoke and web typecheck pass. GitHub check history is linked from the public repository Actions page.
 - packages/core/src/index.ts:25 — TS2307 / unresolved ./ranker; affected all three packages. Restored the existing C10 implementation.
 - apps/web/app/layout.ts — build-time Google font requests failed DNS for Inter, Space Grotesk and JetBrains Mono. Replaced remote font loading with bundled fonts; final Geist redesign is bundled too. This was a network build error, not a TypeScript source error with a reported line.
 - Temporary web build runtime could not resolve React after dependency replacement; reinstall/runtime resolution restored. The log reported no application file/line.
@@ -161,6 +163,7 @@ The evaluation predates the DST-only normalization fix; category/owner logic was
 | b465f8d | Preserve live community in Board/Review/Digest/Failures and demo community when leaving simulator; verified new navigation. |
 | 2e73376 | Keep real digests live even with simulator offline mode; restrict fixtures to demo, show honest errors, parallelize independent DB reads. Live digest curls: 0.13–0.27 s after the fix. |
 | 895d74d | Cache navigation metadata for 60 seconds and bound its wait to 1.5 seconds; fix an observed 4.44-second page stall. Three mobile simulator loads reached Play in 187, 44 and 38 ms. |
+| 56dd3b6 | Fix CI smoke importing the API store outside Next: use the equivalent relative mapper import. Web typecheck and the actual default CI smoke pass. |
 
 Database work applied the existing two migrations and seed to the configured project and repaired their migration-history entries, preserving unrelated pre-existing migrations. No new product feature or unrelated schema was introduced.
 
