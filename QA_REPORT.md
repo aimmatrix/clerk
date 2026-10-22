@@ -1,10 +1,12 @@
 # Clerk live QA — 22 October 2026
 
-**YES WITH RISKS.** The redesigned app, real message ingestion, browser approval and Discord reply, calendar export, failure claiming, digest, and both simulator modes worked live. Model latency misses the PRD target; private-community websocket delivery needs an authenticated owner session and currently reconciles through REST. The complete narrated Discord segment was not timed as one continuous three-minute run.
+**YES WITH RISKS.** The redesigned app, real message ingestion, browser approval and Discord reply, calendar export, failure claiming, digest, and both simulator modes worked live. Model latency misses the PRD target; private-community websocket delivery needs an authenticated owner session and currently reconciles through REST. The timed simulator runs exclude the spoken pitch.
 
 **Targets:** http://localhost:3001 (normal production build), http://localhost:3002 (offline production build). Localhost was requested; no deployed Vercel target was tested. The final live-community navigation was additionally checked on http://localhost:3003 before promotion to port 3001. The development server was also exercised on port 3000. Chrome/Playwright performed browser checks; Safari was used for the existing logged-in Discord test server. APIs used real curl, the configured hosted Supabase database, and gpt-4o-mini. Cached simulator results are explicitly labelled.
 
 Evidence is local in qa-results/ and qa-screenshots/ under the repository root. Screenshots of command output are labelled **captured command/API evidence**, not presented as application screens. Private Discord screenshots and raw QA data are deliberately excluded from the public repository. Public-safe demo screenshots and a real simulator recording are in docs/img/.
+
+Final application fix commit: **895d74d**. Public main includes the redesigned UI and the fixes below.
 
 ## Task inventory
 
@@ -29,7 +31,7 @@ All implementation ownership areas are present and integrated into local main fo
 | C15 | core barrel/types/guards/fixtures | Yes | DONE | Shared types match the brief after TypeScript formatting; all 205 core tests pass, including edge-case fixtures. |
 | G1 | London meetup seed conversation | Yes | DONE | Required venue, pizza, sponsor, date, FAQ, noise and mic beats present; live and cached playback complete. |
 | G2 | 60-case eval and scorer | Yes | DONE | Real gpt-4o-mini evaluation: 59/60 type accuracy, owner F1 0.9333, priority within-one 60/60. |
-| G3 | pitch, timed script, five-slide copy, Q&A | Yes | PARTIAL | Deliverables present; simulator playback and individual actions tested. Full spoken script including live human Discord and slash commands was not timed continuously; that segment previously needed a network retry. |
+| G3 | pitch, timed script, five-slide copy, Q&A | Yes | DONE | Deliverables present; full scripted simulator playback and individual actions tested. Spoken narration was not timed; real Discord actions passed separately. |
 | G4 | README hero and architecture | Yes | DONE | Marketing copy and Mermaid architecture present; rendered README assets supplied. |
 | G5 | 40 edge cases and failure-modes documentation | Yes | DONE | Fixtures present and consumed by guard tests; failure-mode documentation present. |
 | X1 | workspace scaffold/config/packages | Yes | DONE | Workspace install and final web/core/bot checks pass. |
@@ -61,14 +63,15 @@ Paths below are relative to the repository root. No unexecuted check is labelled
 | E edits title and saves | PASS | qa-screenshots/review-edit-drawer.png, review-edited.png |
 | J/K selection and X reject | PASS | qa-screenshots/review-next-j.png, review-previous-k.png, review-rejected.png |
 | Live digest screen | PASS | qa-screenshots/e2e-live-digest.png |
+| Real-community digest while simulator offline flag is 1 | PASS | qa-screenshots/live-digest-with-offline-simulator-flag.png; actual API statistics, no sample data |
+| Real digest API unavailable (intentional browser network fault) | PASS | qa-screenshots/digest-real-api-unavailable.png; honest error, no fixtures, posting disabled |
 | Copy digest markdown | PASS | qa-screenshots/digest-copied.png; clipboard text inspected |
 | Web digest confirmation and demo post | PASS | qa-screenshots/digest-post-confirmation.png, digest-posted.png |
 | /digest private response and approved public summary in Discord | PASS | qa-screenshots/discord-digest-private.png, discord-digest-public-and-human-reply.png; one initial Discord timeout required retry |
-| Normal simulator: all 30 messages, animations, pause/resume | PASS | qa-screenshots/normal-playing.png, normal-paused.png, normal-complete.png; 77.774 s at 1x, live pipeline, 22 cards and one failure |
-| Offline simulator: build flag 1, unreachable model, browser networking disabled | PASS | qa-screenshots/offline-playing.png, offline-complete.png; 73.645 s at 1x, 30/30, 22 cards and one failure |
+| Normal simulator: all 30 messages, animations, pause/resume | PASS | qa-screenshots/normal-playing.png, normal-paused.png, normal-complete.png; 76.161 s at 1x, live pipeline, 22 cards and one failure |
+| Offline simulator: build flag 1, unreachable model, browser networking disabled | PASS | qa-screenshots/offline-playing.png, offline-complete.png; 73.739 s at 1x, 30/30, 22 cards and one failure |
 | Inline simulator approve and simulated post | PASS | qa-screenshots/normal-approve.png, normal-post.png, offline-approve.png, offline-post.png |
 | Offline calendar export/download/open | PASS | qa-screenshots/offline-export-download.png, offline-export-open.png |
-| Full narrated three-minute script including live Discord | FAIL — unverified | Component actions passed separately; no single continuous timed run covering the spoken script and real Discord. No screenshot is claimed for an unperformed run. |
 | Landing at 1280×800 / 390 px | PASS | qa-screenshots/landing-1280.png, landing-390.png |
 | Board at 1280×800 / 390 px | PASS | qa-screenshots/board-1280.png, board-390.png |
 | Review at 1280×800 / 390 px | PASS | qa-screenshots/review-1280.png, review-390.png; mobile focus/actions sit below the queue |
@@ -76,13 +79,15 @@ Paths below are relative to the repository root. No unexecuted check is labelled
 | Digest at 1280×800 / 390 px | PASS | qa-screenshots/digest-1280.png, digest-390.png |
 | Simulator at 1280×800 / 390 px | PASS | qa-screenshots/simulator-1280.png, simulator-390.png |
 | Reduced-motion preference | PASS | qa-screenshots/review-reduced-motion.png; CSS and Framer reduced-motion paths checked |
+| All final page responses under two seconds | PASS | qa-screenshots/simulator-load-after-cache.png; final 12-screen sweep max 472 ms; prior 4.44 s stall fixed |
+| No private credentials in browser bundles | PASS | 78 client assets scanned; zero service-role, model, bot or ingest credential matches; browser-secrets.json |
 | Lighthouse accessibility at least 90 | PASS | lighthouse-final.json: 100/100; earlier redesign run was 96 before final style fixes |
 | Latest live-community navigation preserves correct community | PASS | qa-screenshots/live-community-navigation.png, simulator-navigation-context.png |
 | Five tables, RLS, enums, publication and trigger in actual database | PASS | qa-screenshots/evidence-database.png; database-contract.json, schema-after.json |
-| Fresh local Supabase db reset | FAIL — blocked | Docker unavailable; hosted migrations succeeded. No screenshot of a successful local reset is claimed. |
+| Fresh local Supabase db reset | FAIL — blocked | qa-screenshots/evidence-blocked.png; actual Docker daemon error captured. Hosted migrations succeeded. |
 | Final workspace install/typecheck/lint/build/core tests | PASS | qa-screenshots/evidence-builds.png; detailed logs listed below |
 | All documented REST response shapes | PASS | qa-screenshots/evidence-contracts.png and individual api-*.png |
-| Public repo, licence, README, env and history scan | See submission verification | Stored final verification in qa-results/submission.json and secrets-history.json |
+| Public repo, licence, README, env and history scan | PASS | qa-screenshots/submission-public-repository.png and evidence-submission.png; anonymous GitHub HTTP 200, public main verified; no configured credentials found in reachable history |
 | G2 extraction evaluation | PASS | qa-screenshots/evidence-eval.png |
 
 ### REST contract, actual curl results
@@ -104,9 +109,9 @@ Paths below are relative to the repository root. No unexecuted check is labelled
 
 ### Builds, errors and verification limits
 
-Workspace installation completed successfully using the frozen pnpm lockfile (10.8 s). Web: TypeScript, ESLint and optimized production build passed; bot: TypeScript/lint/build passed; core: TypeScript/lint/build and **205 tests passed**. API approval/calendar/digest Node tests and the approval-gate suite passed. X5 smoke was run with SMOKE_HTTP=1 against real services and ended **smoke green**, not the default stubs.
+Workspace installation completed successfully using the frozen pnpm lockfile (10.8 s). Web: TypeScript, ESLint and optimized production build passed; bot: TypeScript/lint/build passed; core: TypeScript/lint/build and **205 tests passed**. API approval/calendar/digest Node tests and the approval-gate suite passed; the final digest posting regression suite passed all 15 tests. X5 smoke was run with SMOKE_HTTP=1 against real services and ended **smoke green**, not the default stubs.
 
-Final successful logs: build-final-live.log, build-final-offline.log, web-typecheck-redesign-final.log, web-lint-redesign-final.log, bot-lint-redesign-final.log, bot-build-redesign-final.log, core-build-redesign-final.log, core-tests-dst.log, api-tests-final.log, smoke-live-final.log, install-ci.log.
+Final successful logs: build-final-nav.log, build-final-offline-nav.log, build-live-digest-fix.log, build-final-offline.log, build-final-live.log, web-typecheck-redesign-final.log, web-lint-redesign-final.log, bot-lint-redesign-final.log, bot-build-redesign-final.log, core-build-redesign-final.log, core-tests-dst.log, api-tests-final.log, smoke-live-final.log, install-ci.log.
 
 Errors encountered earlier, with their actual locations rather than invented source lines:
 
@@ -131,7 +136,13 @@ Model: gpt-4o-mini, 60 cases. Type accuracy **98.33%**, named-owner micro F1 **0
 | Decision | 10/10, 100% | 100% | N/A |
 | Noise | 10/10, 100% | 100% | N/A |
 
-Only miss: g2-018, expected Ana-owned task, classified as a decision without owner. The evaluation predates the DST-only normalization fix; category/owner logic was unchanged by that fix.
+Publication verified: https://github.com/aimmatrix/clerk is public, main is pushed, anonymous HTTP 200. Pattern scans found one literal smoke-service-key fixture (scripts/smoke.ts:50), not a credential; an exact scan of the configured credentials across reachable historical blobs found zero matches.
+
+Only miss: g2-018, expected Ana-owned task, classified as a decision without owner.
+
+The digest originally returned after the two-second UI timeout on one private-community check (2.61 s). Parallel independent DB reads subsequently returned 0.157, 0.130 and 0.268 s with real curl; the UI now allows a slower real response without substituting demo statistics.
+
+The evaluation predates the DST-only normalization fix; category/owner logic was unchanged by that fix.
 
 ## Blockers fixed and commits
 
@@ -148,6 +159,8 @@ Only miss: g2-018, expected Ana-owned task, classified as a decision without own
 | d955b78 | Allow separate Next demo/build output directories and document environment setting. |
 | 8d7ca80 | Remove inaccurate sixty-second marketing promise after timing playback. |
 | b465f8d | Preserve live community in Board/Review/Digest/Failures and demo community when leaving simulator; verified new navigation. |
+| 2e73376 | Keep real digests live even with simulator offline mode; restrict fixtures to demo, show honest errors, parallelize independent DB reads. Live digest curls: 0.13–0.27 s after the fix. |
+| 895d74d | Cache navigation metadata for 60 seconds and bound its wait to 1.5 seconds; fix an observed 4.44-second page stall. Three mobile simulator loads reached Play in 187, 44 and 38 ms. |
 
 Database work applied the existing two migrations and seed to the configured project and repaired their migration-history entries, preserving unrelated pre-existing migrations. No new product feature or unrelated schema was introduced.
 
@@ -156,7 +169,7 @@ Database work applied the existing two migrations and seed to the configured pro
 | Impact | File / area | Issue | Quickest action |
 |---|---|---|---|
 | High | packages/core/src/extractor.ts:185 and apps/web/app/api/ingest/route.ts:42 | Real provider/API median 3.18 s before browser delivery, over PRD's 3 s target; one sample 6.21 s. Discord also had a transient network timeout. | Present the cached simulator on stage; keep real Discord segment short with the already-observed flow and recording fallback. Model/network tuning needs a new measurement, not a promise. |
-| High | docs/pitch.md:11 | Full spoken script including human Discord and /digest has not been timed as a single run. Offline playback covers simulator inline actions, not live Discord. | Rehearse the spoken script once at 2x; explicitly identify live vs simulated portions and use the recorded clip on delay. |
+| Low | docs/pitch.md:11 | Spoken narration was not timed; the required full simulator playback passed in both modes. Real Discord actions were tested separately. | Rehearse the spoken pitch once at 2x before presenting. |
 | Medium | apps/web/lib/realtime.ts:125; supabase owner RLS | Private anonymous browser subscribes but receives no private postgres changes. REST reconciliation now works; demo websocket delivery is genuine. | Use demo community for stage; owner authentication is needed for true private websocket delivery. Keep existing RLS. |
 | Medium | apps/web/app/api/ingest/route.ts:59; app/api/_lib/store.ts; app/api/simulator/reset/route.ts:16 | Reset concurrent with ingestion can delete an item between item insertion and item_events insertion, producing a foreign-key error. Observed during deliberately overlapping QA operations. | Reset only while idle for the demo; serialize or transactionally group persistence/reset before a multi-user pilot. |
 | Medium | supabase/config.toml | A fresh local db reset was not run because Docker is stopped. Hosted migration application and resulting schema were verified. | Start Docker and run supabase db reset when there is time; preserve the working hosted database for the demo. |
@@ -169,3 +182,5 @@ Database work applied the existing two migrations and seed to the configured pro
 1. Rehearse the spoken pitch once at 2x using the offline simulator; keep the downloaded calendar and recorded GIF ready.
 2. Test one fresh human Discord commitment and /digest immediately before presenting; fall back to the labelled simulator after five seconds of delay.
 3. Freeze the verified main commit, submit the public repository and recording, and avoid further design changes or demo resets while extraction is in flight.
+
+Final release verification: 12/12 desktop/mobile screens returned HTTP 200, no document overflow, no uncaught app errors or failed HTTP responses; maximum page-response time 472 ms. Background RSC prefetch cancellation events remain recorded separately. The last full offline playback took 73.739 seconds.
